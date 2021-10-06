@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,6 +25,25 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/username', function () {
+    return Inertia::render('Profile');
+})->name('username');
+
+Route::resource('userprofiles', UserProfileController::class);
+Route::get('getusers', [UserProfileController::class, 'getUsers']);
+Route::get('getProfile', [UserProfileController::class, 'getProfile'])->name('users.getProfile');
+Route::put('user/update/update-profile', [UserProfileController::class, 'updateProfile'])->name('users.update-profile');
+Route::put('user/update-first-name/{id}', [UserProfileController::class, 'updateFname'])->name('users.update-first-name');
+Route::put('user/update-last-name/{id}', [UserProfileController::class, 'updateLname'])->name('users.update-last-name');
+Route::put('user/update-full_name_color/{id}', [UserProfileController::class, 'updateFullNameColor'])->name('users.update-full_name_color');
+Route::put('user/update-full_name_font/{id}', [UserProfileController::class, 'updateFullNameFont'])->name('users.update-full_name_font');
+Route::put('user/update-full_name_font_size/{id}', [UserProfileController::class, 'updateFullNameSize'])->name('users.update-full_name_font_size');
+Route::put('user/update-location/{id}', [UserProfileController::class, 'updateLocation'])->name('users.update-location');
+Route::put('user/update-location_color/{id}', [UserProfileController::class, 'updateLocationColor'])->name('users.update-location_color');
+Route::put('user/update-location_font/{id}', [UserProfileController::class, 'updateLocationFont'])->name('users.update-location_font');
+Route::put('user/update-location_font_size/{id}', [UserProfileController::class, 'updateLocationSize'])->name('users.update-location_font_size');
+Route::post('user/add-social-links', [UserProfileController::class, 'addSocialLinks'])->name('users.add-social-links');
+Route::post('user/profile-pic/upload', [UserProfileController::class, 'upload'])->name('userprofile.upload');
+Route::post('user/bg-pic/upload', [UserProfileController::class, 'uploadBg'])->name('userprofile.uploadBg');

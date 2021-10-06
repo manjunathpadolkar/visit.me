@@ -1,26 +1,24 @@
 <template>
     <div>
         <Head :title="title" />
-
         <jet-banner />
-
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
-                <!-- Primary Navigation Menu -->
+        <div class="min-h-screen relative">
+            <nav class="bg-white border-b-2 fixed top-0 z-20 w-full">
+                <!-- Primary Navigation for  Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('username')">
                                     <jet-application-mark class="block h-9 w-auto" />
                                 </Link>
                             </div>
-
-                            <!-- Navigation Links -->
+                            
+                            <!-- Profile Page -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                <jet-nav-link :href="route('username')" :active="route().current('username')">
+                                    Profile
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -80,7 +78,6 @@
                                     </template>
                                 </jet-dropdown>
                             </div>
-
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
                                 <jet-dropdown align="right" width="48">
@@ -141,9 +138,10 @@
 
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
+
                     <div class="pt-2 pb-3 space-y-1">
-                        <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                        <jet-responsive-nav-link :href="route('username')" :active="route().current('username')">
+                            Profile
                         </jet-responsive-nav-link>
                     </div>
 
@@ -224,7 +222,7 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="mt-16 bg-gray-200">
                 <slot></slot>
             </main>
         </div>
