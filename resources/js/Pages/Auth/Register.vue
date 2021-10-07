@@ -20,6 +20,11 @@
             </div>
 
             <div class="mt-4">
+                <jet-label for="user_name" value="User Name" />
+                <jet-input id="user_name" type="text" class="mt-1 block w-full" v-model="form.user_name" required autofocus autocomplete="user_name" />
+            </div>
+
+            <div class="mt-4">
                 <jet-label for="email" value="Email" />
                 <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
             </div>
@@ -88,6 +93,7 @@
                 form: this.$inertia.form({
                     first_name: '',
                     last_name: '',
+                    user_name:'',
                     email: '',
                     password: '',
                     password_confirmation: '',

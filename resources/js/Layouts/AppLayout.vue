@@ -14,9 +14,12 @@
                                     <jet-application-mark class="block h-9 w-auto" />
                                 </Link>
                             </div>
-                            
                             <!-- Profile Page -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link class="text-white" :href="route('dashboard')" :active="route().current('dashboard')">
+                                    Dashboard
+                                </jet-nav-link>
+                                
                                 <jet-nav-link :href="route('username')" :active="route().current('username')">
                                     Profile
                                 </jet-nav-link>

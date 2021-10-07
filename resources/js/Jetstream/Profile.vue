@@ -12,7 +12,7 @@
         <!-- Skill -->
         <div class=" md:flex md:justify-center md:ml-10 md:mr-10 md:mt-4">
             <div class="sm:mt-4 md:mt-0 sm:flex sm:justify-center px-2 py-2" v-for="skill in skillTags" :key="skill">
-                <span class=" rounded-full py-2 px-4" :class="$store.state.skill_tag_font" :style="[{background: $store.state.skill_tag_bg_color},{color: $store.state.skill_tag_text_color}]">{{ skill }} </span>
+              <span class=" rounded-full py-2 px-4" :class="$store.state.skill_tag_font" :style="[{background: $store.state.skill_tag_bg_color},{color: $store.state.skill_tag_text_color}]">{{ skill }} </span>
             </div>
         </div>
         <!-- Tabs -->
@@ -20,15 +20,12 @@
             <div class="flex justify-between py-3 ">
                 <div @click="activeTab='Home'" class=" ml-10 bg-secondary-100 text-secondary-200 text-xs uppercase font-bold rounded-full">
                     <svg class="w-8 h-8 inline-block hover:scale-125 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    <h2 class="mt-4">#9898</h2>
                 </div>
                 <div @click="activeTab='Contact'" class="bg-secondary-100 text-secondary-200 text-xs uppercase font-bold rounded-full">
                     <svg class="w-8 h-8 inline-block hover:scale-125 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <h2 class="mt-4">#899</h2>
                 </div>
                 <div @click="activeTab='About'" class=" mr-10 bg-secondary-100 text-secondary-200 text-xs uppercase font-bold rounded-full">
                     <svg class="w-8 h-8 inline-block hover:scale-125 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    <h2 class="mt-4">#897</h2>
                 </div>
             </div>
             <component :is="activeTab"/>
@@ -44,11 +41,18 @@
         </div>
          <!-- Social Links    -->
         <div class="shadow-md hover:shadow-lg">
-            <div class=" flex justify-between py-10 border-b-2 border-white ">
-                <svg class="w-6 h-6 ml-10 hover:scale-150 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                <svg class="w-6 h-6 hover:scale-150 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
-                <svg class="w-6 h-6 hover:scale-150 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-                <svg class="w-6 h-6 mr-10 hover:scale-150 hover:opacity-100 transition ease-out duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+            <div   class=" flex justify-center p-10 border-b-2 border-white ">
+               
+                <div v-for="link in social_links" :key="link.id" class="px-4">
+                    <!-- <img v-if="link.link_type==facebook" src="/images/social_icons/facebook.png">
+                    <img v-if="link.link_type==instagram" src="/images/social_icons/instagram.png">
+                    <img v-if="link.link_type==twitter" src="/images/social_icons/twitter.png">
+                    <img v-if="link.link_type==linkedin" src="/images/social_icons/linkedin.png"> -->
+                    <my-btn primary v-if="link.link_type=='facebook'" class="">Fb</my-btn>
+                    <my-btn primary v-if="link.link_type=='instagram'">In</my-btn>
+                    <my-btn primary v-if="link.link_type=='twitter'">Tw</my-btn>
+                    <my-btn primary v-if="link.link_type=='linkedin'">Ln</my-btn>
+                </div>
             </div>
         </div>
     </div>
@@ -89,18 +93,38 @@
                 isOpen: false,
                 activeEdit: 'Home',
                 skillTags:[],  
+                social_links:[],
             }
         },
         mounted(){
             store.dispatch('getProfile')
             
+            this.getSocialLinks()
+            this.getSkills()
+        },
+        updated(){
+            if(this.$store.state.skill_tag != ""){
+                this.skillTags = this.$store.state.skill_tag.split(',')
+            }
         },
         methods: {
             getSkills(){
                 if(this.$store.state.skill_tag != ""){
                     this.skillTags = this.$store.state.skill_tag.split(',')
                 }
-            }
+            },
+
+            getSocialLinks(){
+                axios.get(route('users.getSocialLinks'))
+                .then((response)=>{
+                    this.social_links = response.data.socialLinks
+                    console.log(this.social_links)
+                })
+                .catch((error)=>{
+                    console.log(error)
+                    this.errors = 'Error retriving data!'
+                })
+            },
         },
     })
 </script>

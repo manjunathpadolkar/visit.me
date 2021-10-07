@@ -38,6 +38,15 @@ class UserProfileController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function getSocialLinks()
+    {
+        $user = auth()->user(); 
+        $socialLinks = SocialLinks::where('user_id', $user->id)->get();
+        return response()->json([
+            'socialLinks' => $socialLinks,
+        ], Response::HTTP_OK);
+    }
+
     //*************************UPDATE FIRST NAME******************************
     public function updateProfile(Request $request)
     {
@@ -61,11 +70,29 @@ class UserProfileController extends Controller
     {
         $user = auth()->user();
         $inputs = json_decode($request->my_prop_name);
+        $link_type="";
         foreach($inputs as $input) 
         {
+            if(strpos($input->name, "facebook") !== false){
+                $link_type="facebook";
+            } 
+            else if(strpos($input->name, "instagram") !== false){
+                $link_type="instagram";
+            }
+            else if(strpos($input->name, "linkedin") !== false){
+                $link_type="linkedin";
+            }
+            else if(strpos($input->name, "twitter") !== false){
+                $link_type="twitter";
+            }
+            else{
+                $link_type="";
+            }
+            // youtube
             $data = array(
                 'user_id' => $user->id,
-                'links' => $input->name 
+                'links' => $input->name,
+                'link_type' => $link_type
             );
             $links = SocialLinks::create($data);
         }   

@@ -48,6 +48,7 @@ const store = createStore({
         description_color : '',
         description_font : '',
         backgroundOpacity:'',
+        social_links:[],
       }
   } ,
 
@@ -60,6 +61,16 @@ const store = createStore({
       axios.get('/getProfile')
       .then((response)=>{
         context.commit('setProfile', response.data.userProfile)
+      })
+      .catch((error)=>{
+          console.log(error)
+          this.errors = 'Error retriving data!'
+      })
+    },
+    getSocialLinks(context){
+      axios.get(route('user.getSocialLinks'))
+      .then((response)=>{
+        context.commit('setSocialLinks', response.data.socialLinks)
       })
       .catch((error)=>{
           console.log(error)
@@ -114,6 +125,10 @@ const store = createStore({
         state.description_color = data.description_color 
         state.description_font = data.description_font
         state.background_opacity = data.background_opacity
+      },
+
+      setSocialLinks(state, data){
+        state.social_links = data
       },
 
       updateFirstName(state, data){

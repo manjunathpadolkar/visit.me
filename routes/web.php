@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Models\SocialLinks;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,11 +28,15 @@ Route::get('/', function () {
     ]);
 });
 
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard');
 
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/username', function () {
+Route::middleware(['auth:sanctum', 'verified'])->get('/username', function (User $user) {
     return Inertia::render('Profile');
 })->name('username');
+
 
 Route::resource('userprofiles', UserProfileController::class);
 Route::get('getusers', [UserProfileController::class, 'getUsers']);
@@ -47,3 +54,4 @@ Route::put('user/update-location_font_size/{id}', [UserProfileController::class,
 Route::post('user/add-social-links', [UserProfileController::class, 'addSocialLinks'])->name('users.add-social-links');
 Route::post('user/profile-pic/upload', [UserProfileController::class, 'upload'])->name('userprofile.upload');
 Route::post('user/bg-pic/upload', [UserProfileController::class, 'uploadBg'])->name('userprofile.uploadBg');
+Route::get('user/social-links', [UserProfileController::class, 'getSocialLinks'])->name('users.getSocialLinks');

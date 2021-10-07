@@ -17,6 +17,7 @@ class CreateSocialLinksTable extends Migration
             $table->id();
             $table->string('user_id');
             $table->text('links');
+            $table->string('link_type');
             $table->timestamps();
         });
     }

@@ -35,10 +35,6 @@ class CreateUserProfilesTable extends Migration
             $table->string('card_opacity')->nullable();
             $table->string('card_x_coordinates')->nullable();
             $table->string('card_y_coordinates')->nullable();//Use offset to get element along with width
-            $table->string('facebook')->nullable();
-            $table->string('twitter')->nullable();
-            $table->string('instagram')->nullable();
-            $table->string('linkedin')->nullable();
             $table->string('full_name_color')->nullable();
             $table->string('full_name_font')->nullable();
             $table->string('full_name_font_size')->nullable();

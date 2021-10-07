@@ -32,7 +32,7 @@
                         <label for="last_name" class="block text-sm font-medium text-gray-700">Last name</label>
                         <input type="text" @change="updateLName({last_name})" name="last_name" id="last_name" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="last_name">
                         <div v-if="v$.last_name.$error" class=" text-red-600">Last Name is Required</div> 
-                    </div>
+                    </div> 
                     <div class="col-span-6 sm:col-span-2 mt-4">
                         <label for="full_name_color" class="block text-sm font-medium text-gray-700">Font Color</label>
                         <input type="hidden" name="full_name_color" id="full_name_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="full_name_color" >
@@ -239,6 +239,8 @@
     import Label from './Label.vue'
     import axios from 'axios'
     import Button from './Button.vue'
+    import store from '../Store/index.js'
+
 
     export default defineComponent({
         components: {
@@ -246,7 +248,7 @@
             ColorPicker,      
             MyBtn,
             Label,
-                Button,
+            Button,
         },
         
         setup: () => ({ v$: useVuelidate() }),
@@ -328,6 +330,7 @@
         },
         mounted() {
             setTimeout(() => { this.message = null; }, 1000);
+             store.dispatch('getProfile')
             this.getProfile();
         },
         //Get and set state of varaibles
@@ -473,7 +476,7 @@
             //Upload Profile pic
             uploadProfilePic(){
                 let self = this
-                 const config = {
+                const config = {
                     headers: {
                         'content-type': 'multipart/form-data'
                     }
@@ -483,12 +486,13 @@
                 data.append('user_image', this.user_image);
 
                 axios.post(route('userprofile.upload'), data, config)
-                    .then(function (res) {
-                        self.message = res.data.success;
-                    })
-                    .catch(function (err) {
-                        self.output = err;
-                    });
+                .then(function (res) {
+                    self.message = res.data.success;
+                    this.getProfile();
+                })
+                .catch(function (err) {
+                    self.output = err;
+                });
             },
             //Upload Background image
             uploadProfileBg()
@@ -504,12 +508,13 @@
                 data.append('bg_image', this.bg_image);
 
                 axios.post(route('userprofile.uploadBg'), data, config)
-                    .then(function (res) {
-                        self.message = res.data.success;
-                    })
-                    .catch(function (err) {
-                        self.output = err;
-                    });
+                .then(function (res) {
+                    self.message = res.data.success;
+                    this.getProfile();
+                })
+                .catch(function (err) {
+                    self.output = err;
+                });
             },
             
             //***************FIRST NAME UPDATE onchange event*************************
@@ -524,6 +529,7 @@
                     else if(response.data.message){
                         this.message = response.data.message
                         setTimeout(() => { this.message = null;}, 2000);
+                        this.getProfile();
                     }
                 })
                 .catch(e => {
