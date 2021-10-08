@@ -16,11 +16,19 @@
         </my-btn>
    </div>
    
-    <div v-if="message" class="bg-green-500 text-white py-2 px-4 pr-0 mx-6 rounded font-bold mt-4 shadow-lg">
-        <p class="text-sm">
-        {{ message }}
-        </p>
-    </div>
+    <!-- Error/Success messages -->
+        <transition-group name="fade">
+            <div v-if="error" class="bg-red-500 text-white py-2 px-4 pr-0 mx-6 rounded font-bold mt-4 shadow-lg">
+                    <p class="text-sm">
+                    {{ error }}
+                    </p>
+            </div>
+            <div v-if="message" class="bg-green-500 text-white py-2 px-4 pr-0 mx-6 rounded font-bold mt-4 shadow-lg">
+                    <p class="text-sm">
+                    {{ message }}
+                    </p>
+            </div>
+        </transition-group>
 </template>
 
 <script>
@@ -30,6 +38,7 @@
     import useVuelidate from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
     import MyBtn from '../MyComponents/MyBtn.vue'
+import store from '../Store'
 
     export default defineComponent({
         components: {
@@ -38,9 +47,6 @@
         },
 
         setup: () => ({ v$: useVuelidate() }),
-        created(){
-            this.getUser();
-        },
 
         data(){
             return{
@@ -48,6 +54,7 @@
                     name: '',
                 }],
                 message:'',
+                error:'',
             }
         },
         validations () {
@@ -70,27 +77,25 @@
             //Create and save new services
             addCandidate () {
             axios
-                .post('user/add-social-links', {
+                .post(route('users.add-social-links'), {
                     my_prop_name: JSON.stringify(this.inputs)
                 })
                 .then(response => {
-                    // this.message = response.data.message
-                    this.inputs= [{
-                    name: '',
-                    }]
+                    if(response.data.error){
+                        this.error = response.data.error
+                        setTimeout(() => { this.error = null;}, 2000);
+                    }
+                    else if(response.data.message){
+                        this.message = response.data.message
+                        setTimeout(() => { this.message = null;}, 2000);
+                        store.dispatch('getSocialLinks') 
+                        this.inputs= [{
+                            name: '',
+                         }]
+                    }
                 })
                 .catch(error => {})
             },
-            getUser(){
-                axios.get('/getusers')
-                .then((response)=>{
-                    this.user = response.data.user
-                })
-                .catch((error)=>{
-                    console.log(error)
-                    this.errors = 'Error retriving data!'
-                })
-            }
         }
     })
 </script>

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\SocialLinks;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\UserProfile;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class UserProfileController extends Controller
 {
@@ -21,11 +23,11 @@ class UserProfileController extends Controller
         
     }
 
-    public function getUsers()
+    public function getUser()
     {
         $user = auth()->user(); 
         return response()->json([
-            'user' => $user->id,
+            'user_name' => $user->user_name,
         ], Response::HTTP_OK);
     }
 
@@ -70,6 +72,9 @@ class UserProfileController extends Controller
     {
         $user = auth()->user();
         $inputs = json_decode($request->my_prop_name);
+        if(!$inputs){
+            return response()->json(['error' => 'Incorrect Link.']);
+        }
         $link_type="";
         foreach($inputs as $input) 
         {
@@ -86,7 +91,7 @@ class UserProfileController extends Controller
                 $link_type="twitter";
             }
             else{
-                $link_type="";
+                return response()->json(['error' => 'Incorrect Link.']);
             }
             // youtube
             $data = array(
@@ -94,7 +99,7 @@ class UserProfileController extends Controller
                 'links' => $input->name,
                 'link_type' => $link_type
             );
-            $links = SocialLinks::create($data);
+            SocialLinks::create($data);
         }   
         return response()->json(['message' => 'links added Successfully.']);
     }

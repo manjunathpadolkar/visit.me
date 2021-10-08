@@ -62,18 +62,11 @@
             store.dispatch('getProfile')
         },
 
-        // const myPromise = new Promise((resolve, reject) => {
-        //     setTimeout(() => {
-        //         resolve('foo');
-        //     }, 300);
-        // });
-
         methods: {
            updateProfile(data){
                 data._method = 'PUT';
                 axios.post(route('users.update-profile'), data)
                 .then((response)=>{
-                    // resolve(response.data)
                     if(response.data.errors){
                         this.errors = response.data.errors
                         setTimeout(() => { this.errors = null;}, 2000);
@@ -84,7 +77,6 @@
                     }
                 })
                 .catch(e => {
-                    // reject()
                     this.errors = e.data.errors;
                 });
                 

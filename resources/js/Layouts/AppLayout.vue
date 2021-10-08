@@ -10,17 +10,17 @@
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
-                                <Link :href="route('username')">
+                                <Link :href="route('username',[user_name])">
                                     <jet-application-mark class="block h-9 w-auto" />
                                 </Link>
                             </div>
                             <!-- Profile Page -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link class="text-white" :href="route('dashboard')" :active="route().current('dashboard')">
+                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
                                 
-                                <jet-nav-link :href="route('username')" :active="route().current('username')">
+                                <jet-nav-link :href="route('username',[user_name])" :active="route().current('username',[user_name])">
                                     Profile
                                 </jet-nav-link>
                             </div>
@@ -143,7 +143,7 @@
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
 
                     <div class="pt-2 pb-3 space-y-1">
-                        <jet-responsive-nav-link :href="route('username')" :active="route().current('username')">
+                        <jet-responsive-nav-link :href="route('username',[user_name])" :active="route().current('username',[user_name])">
                             Profile
                         </jet-responsive-nav-link>
                     </div>
@@ -257,10 +257,13 @@
             JetResponsiveNavLink,
             Link,
         },
-
+        mounted() {
+            this.getUsers()
+        },
         data() {
             return {
                 showingNavigationDropdown: false,
+                user_name:'',
             }
         },
 
@@ -270,6 +273,18 @@
                     'team_id': team.id
                 }, {
                     preserveState: false
+                })
+            },
+
+            getUsers(){
+                 axios.get(route('users.getUsername'))
+                .then((response)=>{
+                    this.user_name = response.data.user_name
+                    console.log(this.user_name)
+                })
+                .catch((error)=>{
+                    console.log(error)
+                    this.errors = 'Error retriving data!'
                 })
             },
 

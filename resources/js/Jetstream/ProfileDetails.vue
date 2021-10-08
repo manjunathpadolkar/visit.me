@@ -330,7 +330,7 @@
         },
         mounted() {
             setTimeout(() => { this.message = null; }, 1000);
-             store.dispatch('getProfile')
+            store.dispatch('getProfile')
             this.getProfile();
         },
         //Get and set state of varaibles
@@ -341,7 +341,7 @@
                 },
                 set (value) {
                     this.$store.commit('updateFirstName', value)
-                }
+                },
             },
             last_name: {
                 get () {
@@ -488,6 +488,7 @@
                 axios.post(route('userprofile.upload'), data, config)
                 .then(function (res) {
                     self.message = res.data.success;
+                    store.dispatch('getProfile')
                     this.getProfile();
                 })
                 .catch(function (err) {
@@ -510,6 +511,7 @@
                 axios.post(route('userprofile.uploadBg'), data, config)
                 .then(function (res) {
                     self.message = res.data.success;
+                    store.dispatch('getProfile')
                     this.getProfile();
                 })
                 .catch(function (err) {
@@ -529,6 +531,7 @@
                     else if(response.data.message){
                         this.message = response.data.message
                         setTimeout(() => { this.message = null;}, 2000);
+                        store.dispatch('getProfile')
                         this.getProfile();
                     }
                 })

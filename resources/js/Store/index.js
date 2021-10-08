@@ -49,6 +49,7 @@ const store = createStore({
         description_font : '',
         backgroundOpacity:'',
         social_links:[],
+        skill_tags:[],
       }
   } ,
 
@@ -57,6 +58,22 @@ const store = createStore({
   },
 
   actions:{
+
+    getSocialLinks (context) {
+      return new Promise((resolve, reject) => {
+        axios.get(route('users.getSocialLinks'))
+        .then((response)=>{
+          context.commit('setSocialLinks', response.data.socialLinks)
+          resolve()
+        })
+        .catch((error)=>{
+            console.log(error)
+            this.errors = 'Error retriving data!'
+        })
+          
+      })
+    },
+
     getProfile(context){
       axios.get('/getProfile')
       .then((response)=>{
@@ -67,16 +84,18 @@ const store = createStore({
           this.errors = 'Error retriving data!'
       })
     },
-    getSocialLinks(context){
-      axios.get(route('user.getSocialLinks'))
-      .then((response)=>{
-        context.commit('setSocialLinks', response.data.socialLinks)
-      })
-      .catch((error)=>{
-          console.log(error)
-          this.errors = 'Error retriving data!'
-      })
-    },
+
+    // getVisitorProfile(context, data){
+    //   axios.get(route('user.get-visitor-profile',[data]))
+    //   .then((response)=>{
+    //     context.commit('setProfile', response.data.userProfile)
+    //     context.commit('setSocialLinks', response.data.socialLinks)
+    //   })
+    //   .catch((error)=>{
+    //       console.log(error)
+    //       this.errors = 'Error retriving data!'
+    //   })
+    // },
   },
 
   mutations: {
@@ -128,7 +147,7 @@ const store = createStore({
       },
 
       setSocialLinks(state, data){
-        state.social_links = data
+        state.social_links = data 
       },
 
       updateFirstName(state, data){

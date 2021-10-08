@@ -1,18 +1,21 @@
 <template>
-    <div class=" w-3/4 bg-white py-10 ">
-        <!-- Image -->
-        <section>
+    <div class=" w-3/4 py-10 bg-opacity-100">
+        <div class="bg-white">
+            <!-- Image -->
+        <div class="mt-10 py-10">
             <img class="mx-auto shadow rounded-full h-40 w-40 sm:h-16 sm:w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 flex object-center object-cover border-none" :src="'/storage/images/'+$store.state.user_image" alt="profile">
-        </section>
+        </div>
         <!-- Name and Location -->
-        <div class=" border-b-2 border-gray-800 px-2 py-4 mt-10">
+        <div class=" border-b-2 border-gray-400 px-2 py-4">
             <h2 class="font-bold  flex justify-center sm:text-sm md:text-base" :class="$store.state.full_name_font" :style="[`font-size: ${$store.state.full_name_font_size}px`,{color: $store.state.full_name_color}]">{{ $store.state.first_name }} {{ $store.state.last_name }}</h2> 
             <block class=" font-semibold text-xs mt-2 flex justify-center " :class="$store.state.location_font" :style="[`font-size: ${$store.state.location_font_size}px`,{color: $store.state.location_color}]">{{ $store.state.location }}</block>
         </div>
         <!-- Skill -->
-        <div class=" md:flex md:justify-center md:ml-10 md:mr-10 md:mt-4">
-            <div class="sm:mt-4 md:mt-0 sm:flex sm:justify-center px-2 py-2" v-for="skill in skillTags" :key="skill">
-              <span class=" rounded-full py-2 px-4" :class="$store.state.skill_tag_font" :style="[{background: $store.state.skill_tag_bg_color},{color: $store.state.skill_tag_text_color}]">{{ skill }} </span>
+        <div class="border-b-2 border-gray-400">
+            <div class=" md:flex md:justify-center md:ml-10 md:mr-10 md:mt-4 mb-4">
+                <div class="sm:mt-4 md:mt-0 sm:flex sm:justify-center px-2 py-2" v-for="skill in splitedList" :key="skill">
+                    <span class=" rounded-full py-2 px-4 bg-gray-200" :class="$store.state.skill_tag_font" :style="[{background: $store.state.skill_tag_bg_color},{color: $store.state.skill_tag_text_color}]">{{ skill }} </span>
+                </div>
             </div>
         </div>
         <!-- Tabs -->
@@ -43,17 +46,14 @@
         <div class="shadow-md hover:shadow-lg">
             <div   class=" flex justify-center p-10 border-b-2 border-white ">
                
-                <div v-for="link in social_links" :key="link.id" class="px-4">
-                    <!-- <img v-if="link.link_type==facebook" src="/images/social_icons/facebook.png">
-                    <img v-if="link.link_type==instagram" src="/images/social_icons/instagram.png">
-                    <img v-if="link.link_type==twitter" src="/images/social_icons/twitter.png">
-                    <img v-if="link.link_type==linkedin" src="/images/social_icons/linkedin.png"> -->
+                <div v-for="link in socialLinks" :key="link.id" class="px-4">
                     <my-btn primary v-if="link.link_type=='facebook'" class="">Fb</my-btn>
                     <my-btn primary v-if="link.link_type=='instagram'">In</my-btn>
                     <my-btn primary v-if="link.link_type=='twitter'">Tw</my-btn>
                     <my-btn primary v-if="link.link_type=='linkedin'">Ln</my-btn>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -70,7 +70,7 @@
     import ProfileDetails from './ProfileDetails.vue'
     import SocialLinks from './SocialLinks.vue'
     import ContactUs from './ContactUs.vue'
-    import store from '../Store/index.js'
+    import store from '../Store'
     
     export default defineComponent({
         props:['title'],
@@ -98,33 +98,25 @@
         },
         mounted(){
             store.dispatch('getProfile')
-            
-            this.getSocialLinks()
-            this.getSkills()
+            store.dispatch('getSocialLinks').then(() => {
+                this.social_links = this.$store.state.social_links
+            })
         },
-        updated(){
-            if(this.$store.state.skill_tag != ""){
-                this.skillTags = this.$store.state.skill_tag.split(',')
-            }
-        },
-        methods: {
-            getSkills(){
-                if(this.$store.state.skill_tag != ""){
-                    this.skillTags = this.$store.state.skill_tag.split(',')
+        computed: {
+            splitedList(){
+               if(this.$store.state.skill_tag!=null){
+                    this.skill_tags=this.$store.state.skill_tag.split(',')
                 }
+                return this.skill_tags
             },
 
-            getSocialLinks(){
-                axios.get(route('users.getSocialLinks'))
-                .then((response)=>{
-                    this.social_links = response.data.socialLinks
-                    console.log(this.social_links)
-                })
-                .catch((error)=>{
-                    console.log(error)
-                    this.errors = 'Error retriving data!'
-                })
-            },
+            socialLinks(){
+               if(this.$store.state.social_links!=null){
+                    this.social_links = this.$store.state.social_links
+                }
+                return this.social_links
+            }
+
         },
     })
 </script>

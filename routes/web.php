@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\VisitorController;
 use App\Models\SocialLinks;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,7 @@ use Inertia\Inertia;
 |
 */
 
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -27,19 +29,15 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
-
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/username', function (User $user) {
+Route::get('/profile/edit/{username}', function () {
     return Inertia::render('Profile');
 })->name('username');
-
-
 Route::resource('userprofiles', UserProfileController::class);
-Route::get('getusers', [UserProfileController::class, 'getUsers']);
+Route::get('getuser', [UserProfileController::class, 'getUser'])->name('users.getUsername');
 Route::get('getProfile', [UserProfileController::class, 'getProfile'])->name('users.getProfile');
 Route::put('user/update/update-profile', [UserProfileController::class, 'updateProfile'])->name('users.update-profile');
 Route::put('user/update-first-name/{id}', [UserProfileController::class, 'updateFname'])->name('users.update-first-name');
@@ -55,3 +53,7 @@ Route::post('user/add-social-links', [UserProfileController::class, 'addSocialLi
 Route::post('user/profile-pic/upload', [UserProfileController::class, 'upload'])->name('userprofile.upload');
 Route::post('user/bg-pic/upload', [UserProfileController::class, 'uploadBg'])->name('userprofile.uploadBg');
 Route::get('user/social-links', [UserProfileController::class, 'getSocialLinks'])->name('users.getSocialLinks');
+});
+
+// Route::get('/{username}', VisitorController::class, 'showUser')->name('user.show-user');
+// Route::get('/user/profile/{id}', VisitorController::class, 'getVisitorProfile')->name('user.get-visitor-profile');
