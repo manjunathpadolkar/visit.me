@@ -63,24 +63,6 @@
         },
 
         methods: {
-           updateProfile(data){
-                data._method = 'PUT';
-                axios.post(route('users.update-profile'), data)
-                .then((response)=>{
-                    if(response.data.errors){
-                        this.errors = response.data.errors
-                        setTimeout(() => { this.errors = null;}, 2000);
-                    }
-                    else if(response.data.message){
-                        this.message = response.data.message
-                        setTimeout(() => { this.message = null;}, 2000);
-                    }
-                })
-                .catch(e => {
-                    this.errors = e.data.errors;
-                });
-                
-            },
         },
     })
                 

@@ -48,11 +48,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
-        // $user = auth()->user();
-        // $name = $user->first_name;
-        // Route::bind('username', function ($name) {
-        //     return User::where('first_name', $name)->first() ?? abort(404);
-        // });
     }
 
     /**

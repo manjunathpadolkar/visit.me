@@ -1237,9 +1237,6 @@ select {
 .mt-16 {
 	margin-top: 4rem;
 }
-.mb-2 {
-	margin-bottom: 0.5rem;
-}
 .block {
 	display: block;
 }
@@ -1347,6 +1344,9 @@ select {
 }
 .w-20 {
 	width: 5rem;
+}
+.w-9\/12 {
+	width: 75%;
 }
 .w-40 {
 	width: 10rem;
@@ -1602,10 +1602,6 @@ select {
 .border-white {
 	--tw-border-opacity: 1;
 	border-color: rgba(255, 255, 255, var(--tw-border-opacity));
-}
-.border-gray-800 {
-	--tw-border-opacity: 1;
-	border-color: rgba(31, 41, 55, var(--tw-border-opacity));
 }
 .border-green-500 {
 	--tw-border-opacity: 1;

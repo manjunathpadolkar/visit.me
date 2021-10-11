@@ -96,7 +96,7 @@ class UserProfileController extends Controller
             // youtube
             $data = array(
                 'user_id' => $user->id,
-                'links' => $input->name,
+                'name' => $input->name,
                 'link_type' => $link_type
             );
             SocialLinks::create($data);
