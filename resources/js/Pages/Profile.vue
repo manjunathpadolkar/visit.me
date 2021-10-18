@@ -4,7 +4,7 @@
       <div class="relative flex ">
         
           <!-- Div for movable card -->
-          <div class="w-2/3 flex justify-center absolute  bg-gray-200" :style="[!toggleBar ? 'width: 100%': '', {opacity: $store.state.background_opacity},{'background-image': 'url(/storage/images/'+$store.state.bg_image+')'},{'background-size': 'contain'} ]">
+          <div class="w-2/3 flex justify-center absolute  bg-gray-200 "  :class="$store.state.bg_type" :style="[!toggleBar ? 'width: 100%': '', {opacity: $store.state.background_opacity},[!$store.state.bg_display ? {'background-image': 'url(/storage/images/'+$store.state.bg_image+')'} : '']]"> <!-- ,{'background-size': 'contain'} -->
               <profile/>
           </div>
           <!-- div for sidbar fixed -->     
@@ -15,7 +15,7 @@
                     <div  @click="activeEdit='Contact'" class=" font-semibold rounded text-base cursor-pointer" :class="activeEdit==='Contact' ? 'text-blue-900':''">CONTACT</div>
                     <div  @click="activeEdit='Social'" class=" font-semibold rounded text-base cursor-pointer" :class="activeEdit==='Social' ? 'text-blue-900':''">SOCIAL</div>
                   </div>
-                  <component :is="activeEdit"/>  
+                  <!-- <component :is="activeEdit"/>   -->
                   <profile-details v-if="activeEdit==='Home'"></profile-details>
                   <social-links v-if="activeEdit==='Social'"></social-links>
                   <contact-us v-if="activeEdit==='Contact'"></contact-us> 
@@ -37,7 +37,6 @@
     import ProfileDetails from '../Jetstream/ProfileDetails.vue'
     import SocialLinks from '../Jetstream/SocialLinks.vue'
     import ContactUs from '../Jetstream/ContactUs.vue'
-    import store from '../Store/index.js'
 
     export default defineComponent({
         components: {
@@ -59,10 +58,11 @@
         },
         mounted()
         {
-            store.dispatch('getProfile')
+            this.$store.dispatch('getProfile')
         },
 
         methods: {
+
         },
     })
                 

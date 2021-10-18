@@ -38,7 +38,6 @@
     import useVuelidate from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
     import MyBtn from '../MyComponents/MyBtn.vue'
-import store from '../Store'
 
     export default defineComponent({
         components: {
@@ -88,7 +87,7 @@ import store from '../Store'
                     else if(response.data.message){
                         this.message = response.data.message
                         setTimeout(() => { this.message = null;}, 2000);
-                        store.dispatch('getSocialLinks') 
+                        this.$store.dispatch('getSocialLinks') 
                         this.inputs= [{
                             name: '',
                          }]

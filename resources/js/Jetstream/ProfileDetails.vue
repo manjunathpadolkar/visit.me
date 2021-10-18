@@ -4,18 +4,37 @@
             <div class="p-6">
                 <div class=" flex justify-center pb-2"> 
                     <label class=" w-32 h-32 flex flex-col items-center  bg-white rounded-full shadow-md tracking-wide uppercase border border-blue cursor-pointer ease-linear transition-all duration-150">
-                        <span class=" text-base leading-normal "> <img src="/images/profile-pic.png" class="w-32 h-32 rounded-full opacity-50 hover:opacity-100"></span>
+                        <span v-if="$store.state.user_image" class=" text-base leading-normal "> <img :src="'/storage/images/'+$store.state.user_image" alt="profile" class="w-32 h-32 rounded-full opacity-95 hover:opacity-100"></span>
+                        <span v-else class=" text-base leading-normal "> <img src="/images/profile-pic.png" class="w-32 h-32 rounded-full opacity-50 hover:opacity-100"></span>
                         <input type='file' ref="profilePic" class="hidden" @change="uploadProfilePic()"/>
                     </label>
                 </div>
             </div>
             <div class="p-6">
                 <div class=" flex justify-center pb-2"> 
-                    <label class="w-64 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-gray-500 hover:text-white text-gray-500 ease-linear transition-all duration-150">
+                    <label class="w-64 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase  border-4 border-gray-200 border-dashed cursor-pointer hover:shadow-md text-gray-500 ease-linear transition-all duration-150">
+                        <img v-if="$store.state.bg_image" :src="'/storage/images/'+$store.state.bg_image" alt="profile" class="w-32 h-32 mt-2 opacity-95 hover:opacity-100">
                         <svg class="w-6 h-6 text-center" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                         <span class="mt-2 text-base leading-normal">Background</span>
                         <input type='file'  ref="profileBg" class="hidden" @change="uploadProfileBg()"/>
                     </label>
+                </div>
+                <div class="block">
+                    <div class="mt-4 flex justify-center">
+                        <div>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" class="form-checkbox" checked @change="toggleBgDisplay()" v-model="bg_display">
+                                <span class="ml-2">Display Background</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center rounded-lg text-sm mb-4 mt-4" role="group">
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-cover' ? 'bg-blue-500 text-white': ''" @click="updateFillImage()">Fill</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-contain' ? 'bg-blue-500 text-white': ''" @click="updateFitImage()">Fit</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-fill' ? 'bg-blue-500 text-white': ''" @click="updateStretchImage()">Stretch</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline">Tile</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline"  :class="$store.state.bg_type =='mx-auto object-contain' ? 'bg-blue-500 text-white': ''" @click="updateCenterImage()">Center</button>
                 </div>
             </div>
             <div class="p-6">
@@ -239,7 +258,7 @@
     import Label from './Label.vue'
     import axios from 'axios'
     import Button from './Button.vue'
-    import store from '../Store/index.js'
+
 
 
     export default defineComponent({
@@ -308,6 +327,8 @@
                 isOpenSkill:true,
                 isOpenDescription:true,
                 isOpenBackground:true,
+                bgDisplay:true,
+                stretchImage:'',
                                
             }
         },
@@ -330,7 +351,7 @@
         },
         mounted() {
             setTimeout(() => { this.message = null; }, 1000);
-            store.dispatch('getProfile')
+            this.$store.dispatch('getProfile')
             this.getProfile();
         },
         //Get and set state of varaibles
@@ -471,6 +492,15 @@
                     this.$store.commit('updateBackgroundOpacity', value)
                 },
             },
+
+            bgDisplay: {
+                get () {
+                    return this.$store.state.bg_display
+                },
+                set (value) {
+                    this.$store.commit('updateBgDisplay', value)
+                },
+            },
         },
         methods: {
             //Upload Profile pic
@@ -488,7 +518,7 @@
                 axios.post(route('userprofile.upload'), data, config)
                 .then(function (res) {
                     self.message = res.data.success;
-                    store.dispatch('getProfile')
+                    self.$store.dispatch('getProfile')
                     this.getProfile();
                 })
                 .catch(function (err) {
@@ -511,7 +541,7 @@
                 axios.post(route('userprofile.uploadBg'), data, config)
                 .then(function (res) {
                     self.message = res.data.success;
-                    store.dispatch('getProfile')
+                    self.$store.dispatch('getProfile')
                     this.getProfile();
                 })
                 .catch(function (err) {
@@ -531,12 +561,12 @@
                     else if(response.data.message){
                         this.message = response.data.message
                         setTimeout(() => { this.message = null;}, 2000);
-                        store.dispatch('getProfile')
-                        this.getProfile();
+                        self.$store.dispatch('getProfile')
+                        this.getProfilselfe();
                     }
                 })
                 .catch(e => {
-                    this.errors = e.data.errors;
+                    this.errors = e.errors;
                 });
                 
             },
@@ -704,6 +734,42 @@
                 }
             },
 
+            toggleBgDisplay(){
+                this.bgDisplay = !this.bgDisplay
+                const data={
+                    bg_display : this.bgDisplay,
+                }
+                this.updateProfile(data)
+            },
+
+            updateStretchImage(){
+                const data = {
+                    bg_type : "object-fill"
+                }
+                this.updateProfile(data)
+            },
+
+            updateFillImage(){
+                const data = {
+                    bg_type : "object-cover"
+                }
+                this.updateProfile(data)
+            },
+
+            updateFitImage(){
+                const data = {
+                    bg_type : "object-contain"
+                }
+                this.updateProfile(data)
+            },
+
+            updateCenterImage(){
+                const data = {
+                    bg_type : "mx-auto object-contain"
+                }
+                this.updateProfile(data)
+            },
+
             changeNameColor(full_name_color_picker) {
                 // const { r, g, b, a } = color.rgba
                 // this.color = `rgba(${r}, ${g}, ${b}, ${a})`
@@ -754,6 +820,7 @@
                 this.description_color = this.$store.state.description_color
                 this.description_font = this.$store.state.description_font
                 this.background_opacity = this.$store.state.background_opacity
+                this.bgDisplay = this.$store.state.bg_display
                 
             }
         },

@@ -3,7 +3,7 @@
         <Head :title="title" />
         <jet-banner />
         <div class="min-h-screen relative">
-            <nav class="bg-white border-b-2 fixed top-0 z-20 w-full">
+            <nav class="bg-white border-b-2 fixed top-0 z-30 w-full">
                 <!-- Primary Navigation for  Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">

@@ -30,7 +30,9 @@
         "@vuelidate/core": "^2.0.0-alpha.25",
         "@vuelidate/validators": "^2.0.0-alpha.21",
         "vue-color-kit": "^1.0.5",
+        "vue-masonry-gallery": "^1.1.1",
         "vue-tailwind-color-picker": "^1.0.6",
+        "vueperslides": "^3.3.2",
         "vuex": "^4.0.2"
     }
 }

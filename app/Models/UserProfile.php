@@ -55,5 +55,8 @@ class UserProfile extends Model
         'description_color',
         'description_font',
         'background_opacity',
+        'bg_type',
+        'bg_display',
+        'link_color'
     ];
 }

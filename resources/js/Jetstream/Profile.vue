@@ -1,7 +1,7 @@
 <template>
     <!-- different widths for visitor and registered user -->
-    <div class=" py-10 bg-opacity-100" :class=" $store.state.check_visitor ? 'w-9/12 px-10' : 'w-3/4' ">
-        <div class="bg-white">
+    <div class=" py-10 bg-opacity-100 relative"   @dragover="drag_over" @drop="drop" :class=" $store.state.check_visitor ? 'w-3/5 px-10' : 'w-9/12' ">
+        <div class="bg-white absolute" draggable="true" @dragstart="drag_start" id="drag">
             <!-- Image -->
         <div class="mt-10 py-10">
             <img class="mx-auto shadow rounded-full h-40 w-40 sm:h-16 sm:w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 flex object-center object-cover border-none" :src="'/storage/images/'+$store.state.user_image" alt="profile">
@@ -44,19 +44,16 @@
             <p :class="$store.state.description_font" :style="[{color: $store.state.description_color}]"> {{ $store.state.description }} </p>
         </div>
          <!-- Social Links    -->
-        <div class="shadow-md hover:shadow-lg">
-            <div   class=" flex justify-center p-10 border-b-2 border-white ">
-               
-                <div v-for="link in socialLinks" :key="link.id" class="px-4">
-                    <!-- <my-btn primary v-if="link.link_type=='facebook'">Fb</my-btn>
-                    <my-btn primary v-if="link.link_type=='instagram'">In</my-btn>
-                    <my-btn primary v-if="link.link_type=='twitter'">Tw</my-btn>
-                    <my-btn primary v-if="link.link_type=='linkedin'">Ln</my-btn> -->
-
-                    <a v-if="link.link_type=='facebook'" :href="link.name"><img src="/images/social_icons/facebook.png" class="w-16 h-16"></a>
-                    <a v-if="link.link_type=='instagram'" :href="link.name"><img src="/images/social_icons/instagram.png" class="w-16 h-16"></a>
-                    <a v-if="link.link_type=='twitter'" :href="link.name"><img src="/images/social_icons/twitter.png" class="w-16 h-16"></a>
-                    <a v-if="link.link_type=='linkedin'" :href="link.name"><img src="/images/social_icons/linkedin.png" class="w-16 h-16"></a>
+        <div class="shadow-md hover:shadow-lg flex justify-center">
+            <div class="p-10 border-b-2 border-white ">
+                <div v-for="link in socialLinks" :key="link.id" class="px-4 ">
+                    <ul class="">
+                        <li class="mt-4">
+                                <a :href="link.name"><img :src="link.source" class="w-8 h-8 inline-block">
+                                    {{ link.name }}
+                                </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -76,7 +73,6 @@
     import ProfileDetails from './ProfileDetails.vue'
     import SocialLinks from './SocialLinks.vue'
     import ContactUs from './ContactUs.vue'
-    import store from '../Store'
     
     export default defineComponent({
         props:['title'],
@@ -106,8 +102,8 @@
             //Check if the user is registered user or the visitor
             //If the user is a vistor then the store is already updated for the visitor.
             if(!this.$store.state.check_visitor){
-                store.dispatch('getProfile')
-                store.dispatch('getSocialLinks').then(() => {
+               this.$store.dispatch('getProfile')
+                this.$store.dispatch('getSocialLinks').then(() => {
                     this.social_links = this.$store.state.social_links
                 })
             }
@@ -129,5 +125,28 @@
             }
 
         },
+        methods:{
+            drag_start(event) {
+                var style = window.getComputedStyle(event.target, null);
+                var str = (parseInt(style.getPropertyValue("left")) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top")) - event.clientY);
+                event.dataTransfer.setData("Text", str);
+            },
+
+            
+            drop(event) {
+                var offset = event.dataTransfer.getData("Text").split(',');
+                var dm = document.getElementById('drag');
+                dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+                dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+                event.preventDefault();
+                return false;
+            },
+
+            drag_over(event) {
+                event.preventDefault();
+                return false;
+            }
+
+        }
     })
 </script>

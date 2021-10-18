@@ -57,6 +57,9 @@ class CreateUserProfilesTable extends Migration
             $table->string('description_color')->nullable();
             $table->string('description_font')->nullable();
             $table->string('background_opacity')->nullable();
+            $table->string('bg_type')->nullable();  
+            $table->boolean('bg_display')->default(false);  
+            $table->string('link_color')->nullable();
             $table->timestamps();
         });
     }

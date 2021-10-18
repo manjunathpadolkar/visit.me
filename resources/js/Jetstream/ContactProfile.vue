@@ -19,10 +19,6 @@
                         <span class=" sm:ml-3 text-xs" :class="$store.state.address_font" :style="[{color: $store.state.address_color}]">{{ $store.state.address }}</span>
                     </div> 
                     <div class="mt-4">
-                        <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        <span class=" py-2 sm:ml-3 text-xs" :class="$store.state.email_font" :style="[{color: $store.state.email_color}]">{{ $store.state.email }}</span>
-                    </div>
-                    <div class="mt-4">
                         <svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                         <span class=" py-2 sm:ml-3 text-xs" :class="$store.state.phone_font" :style="[{color: $store.state.phone_color}]">{{ $store.state.phone }}</span>
                     </div>   

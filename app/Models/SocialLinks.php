@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class SocialLinks extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','name','link_type'];
+    protected $fillable = ['user_id','name','link_type','source'];
 }

@@ -51,6 +51,8 @@ const store = createStore({
         social_links:[],
         skill_tags:[],
         check_visitor:false,
+        bg_display:'',
+        bg_type:'',
       }
   } ,
 
@@ -148,6 +150,8 @@ const store = createStore({
         state.description_color = data.description_color 
         state.description_font = data.description_font
         state.background_opacity = data.background_opacity
+        state.bg_display = data.bg_display
+        state.bg_type = data.bg_type
       },
 
       setSocialLinks(state, data){
@@ -284,6 +288,10 @@ const store = createStore({
 
       updateBackgroundOpacity(state, data){
         state.background_opacity = data
+      },
+
+      updateBgDisplay(state, data){
+        state.bg_display = data
       },
   },
 

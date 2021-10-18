@@ -75,20 +75,25 @@ class UserProfileController extends Controller
         if(!$inputs){
             return response()->json(['error' => 'Incorrect Link.']);
         }
-        $link_type="";
+        // $link_type="";
+        // $link_source="";
         foreach($inputs as $input) 
         {
             if(strpos($input->name, "facebook") !== false){
                 $link_type="facebook";
+                $link_source = "/images/social_icons/facebook.png";
             } 
             else if(strpos($input->name, "instagram") !== false){
                 $link_type="instagram";
+                $link_source = "/images/social_icons/instagram.png";
             }
             else if(strpos($input->name, "linkedin") !== false){
                 $link_type="linkedin";
+                $link_source = "/images/social_icons/linkedin.png";
             }
             else if(strpos($input->name, "twitter") !== false){
                 $link_type="twitter";
+                $link_source = "/images/social_icons/twitter.png";
             }
             else{
                 return response()->json(['error' => 'Incorrect Link.']);
@@ -97,7 +102,8 @@ class UserProfileController extends Controller
             $data = array(
                 'user_id' => $user->id,
                 'name' => $input->name,
-                'link_type' => $link_type
+                'link_type' => $link_type,
+                'source' => $link_source
             );
             SocialLinks::create($data);
         }   

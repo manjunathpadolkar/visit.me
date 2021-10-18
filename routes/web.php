@@ -17,7 +17,9 @@ use Inertia\Inertia;
 |
 */
 
-
+//routes for unregistered users
+Route::get('visit/{username}', [VisitorController::class, 'showUser'])->name('visitor.show-user');
+Route::get('user/profile/{id}', [VisitorController::class, 'getVisitorProfile'])->name('visitor.get-visitor-profile');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -54,8 +56,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('user/social-links', [UserProfileController::class, 'getSocialLinks'])->name('users.getSocialLinks');
 });
 
-//routes for unregistered users
-Route::get('visit/{username}', [VisitorController::class, 'showUser'])->name('visitor.show-user');
-Route::get('user/profile/{id}', [VisitorController::class, 'getVisitorProfile'])->name('visitor.get-visitor-profile');
+
 
 
