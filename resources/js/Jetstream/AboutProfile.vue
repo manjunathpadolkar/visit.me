@@ -1,4 +1,5 @@
 <template>
+    <div class="w-full">
         <div class="bg-white rounded overflow-hidden shadow-md hover:shadow-lg w-auto">
             <div class="bg-white py-10 rounded overflow-hidden shadow-md hover:shadow-lg">
                 <h2 class="flex justify-center font-extrabold text-4xl">ABOUT</h2>
@@ -12,9 +13,9 @@
                     :title="slide.title"
                     :content="slide.content" />
                 </vueper-slides>
-               
             </div>
         </div>
+    </div>
 </template>
 
 <script>

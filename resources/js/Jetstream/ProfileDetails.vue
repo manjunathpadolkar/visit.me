@@ -33,8 +33,8 @@
                     <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-cover' ? 'bg-blue-500 text-white': ''" @click="updateFillImage()">Fill</button>
                     <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-contain' ? 'bg-blue-500 text-white': ''" @click="updateFitImage()">Fit</button>
                     <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-fill' ? 'bg-blue-500 text-white': ''" @click="updateStretchImage()">Stretch</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline">Tile</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline"  :class="$store.state.bg_type =='mx-auto object-contain' ? 'bg-blue-500 text-white': ''" @click="updateCenterImage()">Center</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='bg-left-top bg-repeat w-full h-32' ? 'bg-blue-500 text-white': ''" @click="updateTileImage()">Tile</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline"  :class="$store.state.bg_type =='bg-center object-contain' ? 'bg-blue-500 text-white': ''" @click="updateCenterImage()">Center</button>
                 </div>
             </div>
             <div class="p-6">
@@ -562,7 +562,7 @@
                         this.message = response.data.message
                         setTimeout(() => { this.message = null;}, 2000);
                         self.$store.dispatch('getProfile')
-                        this.getProfilselfe();
+                        this.getProfile();
                     }
                 })
                 .catch(e => {
@@ -765,7 +765,14 @@
 
             updateCenterImage(){
                 const data = {
-                    bg_type : "mx-auto object-contain"
+                    bg_type : "bg-center object-contain"
+                }
+                this.updateProfile(data)
+            },
+
+            updateTileImage(){
+                const data = {
+                    bg_type : "bg-left-top bg-repeat w-full"
                 }
                 this.updateProfile(data)
             },

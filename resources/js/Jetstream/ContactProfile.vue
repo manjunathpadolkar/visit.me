@@ -1,5 +1,5 @@
 <template>
-        
+    <div class="w-full">
         <div class="grid grid-cols-2 rounded shadow-md hover:shadow-lg  justify-center"> 
             <div class="grid-cols-2 col-span-2 py-10">
                 <h2 class="flex justify-center font-extrabold text-4xl">CONTACT</h2>
@@ -29,6 +29,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </template>
 
 <script>

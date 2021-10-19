@@ -20,8 +20,8 @@ const store = createStore({
         bg_image : '',
         bg_color : '',
         card_opacity : '',
-        card_x_coordinates : '',
-        card_y_coordinates : '',
+        card_left_position : '',
+        card_top_position : '',
         facebook : '',
         twitter : '',
         instagram : '',
@@ -122,8 +122,8 @@ const store = createStore({
         state.bg_image = data.bg_image 
         state.bg_color = data.bg_color 
         state.card_opacity = data.card_opacity 
-        state.card_x_coordinates = data.card_x_coordinates 
-        state.card_y_coordinates = data.card_y_coordinates 
+        state.card_left_position = data.card_left_position 
+        state.card_top_position = data.card_top_position 
         state.facebook = data.facebook 
         state.twitter = data.twitter 
         state.instagram = data.instagram 

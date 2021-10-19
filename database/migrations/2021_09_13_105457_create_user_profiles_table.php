@@ -33,8 +33,8 @@ class CreateUserProfilesTable extends Migration
             $table->string('bg_image')->nullable();
             $table->string('bg_color')->nullable();
             $table->string('card_opacity')->nullable();
-            $table->string('card_x_coordinates')->nullable();
-            $table->string('card_y_coordinates')->nullable();//Use offset to get element along with width
+            $table->string('card_left_position')->nullable();
+            $table->string('card_top_position')->nullable();//Use offset to get element along with width
             $table->string('full_name_color')->nullable();
             $table->string('full_name_font')->nullable();
             $table->string('full_name_font_size')->nullable();
