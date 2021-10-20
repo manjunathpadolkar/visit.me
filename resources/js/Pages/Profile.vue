@@ -3,7 +3,7 @@
       <!-- divide page into two parts -->
         <div class="relative flex ">
           <!-- Div for movable card -->
-                <div class="w-2/3 flex justify-center bg-gray-500"  :class="$store.state.bg_type" :style="[!toggleBar ? 'width: 100%': '', {opacity: $store.state.background_opacity},[!$store.state.bg_display ? {'background-image': 'url(/storage/images/'+$store.state.bg_image+')'} : '']]"> <!-- ,{'background-size': 'contain'} -->
+                <div class="w-2/3 flex justify-center bg-gray-500" :style="[!toggleBar ? 'width: 100%': '', {opacity: $store.state.background_opacity},!$store.state.bg_display ? {'background-image': 'url(/storage/images/'+$store.state.bg_image+')'} : '', bgType ? bgType :'']"> <!-- ,{'background-size': 'contain'} -->
                     <profile/>
                 </div>
           <!-- div for sidbar fixed -->     
@@ -53,7 +53,8 @@
                 isOpen: false,
                 activeEdit: 'Home',
                 card_x_coordinates:'',
-                card_y_coordinates:''
+                card_y_coordinates:'',
+                bg_type:''
             }
         },
         mounted()
@@ -61,9 +62,15 @@
             this.$store.dispatch('getProfile')
         },
 
-        methods: {
-
+        computed:{
+             bgType(){
+               if(this.$store.state.bg_type!=null){
+                    this.bg_type=this.$store.state.bg_type
+                }
+                return this.bg_type
+            },
         },
+        
     })
                 
 </script>

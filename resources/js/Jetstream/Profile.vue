@@ -1,7 +1,7 @@
 <template>
     <!-- different widths for visitor and registered user -->
     <div class=" py-10 "   @dragover="dragOver" @drop="drop" :class=" $store.state.check_visitor ? 'w-3/5 px-10' : 'w-3/6'">
-        <div class=" bg-gray-500 text-white border-4 border-white opacity-50 relative" draggable="true" @dragstart="dragStart" id="drag" :style="[{left: $store.state.card_left_position},{top: $store.state.card_top_position}]">
+        <div class=" bg-gray-500 text-white border-4 border-white opacity-50 relative" draggable="true" @dragstart="dragStart" id="drag" :style="[{left: $store.state.card_left_position},{top: $store.state.card_top_position}, {width: $store.state.resize_width}]" style=" resize: horizontal; min-width: 450px; overflow: auto; max-width: 800px;" @click="getWidth()">
             <!-- Image -->
             <div class="mt-10 py-10">
                 <img class="mx-auto shadow rounded-full h-40 w-40 sm:h-16 sm:w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 flex object-center object-cover border-none" :src="'/storage/images/'+$store.state.user_image" alt="profile">
@@ -49,9 +49,9 @@
                     <div v-for="link in socialLinks" :key="link.id" class="px-4 ">
                         <ul class="">
                             <li class="mt-4">
-                                    <a :href="link.name"><img :src="link.source" class="w-8 h-8 inline-block">
-                                        {{ link.name }}
-                                    </a>
+                                <a :href="link.name"><img :src="link.source" class="w-8 h-8 inline-block">
+                                    {{ link.name }}
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -98,6 +98,7 @@
                 social_links:[],
                 cardLeftPosition:'',
                 cardTopPosition:'',
+                resizeWidth:'',
             }
         },
         mounted(){
@@ -124,22 +125,50 @@
                     this.social_links = this.$store.state.social_links
                 }
                 return this.social_links
-            }
-
+            },
         },
         methods:{
             dragStart(event) {
                 var style = window.getComputedStyle(event.target, null);
                 var str = (parseInt(style.getPropertyValue("left")) - event.clientX) + ',' + (parseInt(style.getPropertyValue("top")) - event.clientY);
-                event.dataTransfer.setData("Text", str);
+                event.dataTransfer.setData("Text", str)
             },
 
             
             drop(event) {
                 var offset = event.dataTransfer.getData("Text").split(',');
                 var dm = document.getElementById('drag');
-                dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
-                dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+                if((event.clientX + parseInt(offset[0], 10))<=210 && (event.clientX + parseInt(offset[0], 10))>=-210 && (event.clientY + parseInt(offset[1], 10))>=0)
+                {
+                    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+                    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+                }
+                else if((event.clientX + parseInt(offset[0], 10))<-210){
+                    dm.style.left = '-210px';
+                    if((event.clientY + parseInt(offset[1], 10))>=0)
+                    {
+                       dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px'; 
+                    }
+                    else{
+                        dm.style.top = '0px';
+                    }
+                } 
+                else if((event.clientX + parseInt(offset[0], 10))>210){
+                    dm.style.left = '210px';
+                    if((event.clientY + parseInt(offset[1], 10))>=0)
+                    {
+                       dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px'; 
+                    }
+                    else{
+                        dm.style.top = '0px';
+                    }
+                }   
+                else{
+                     dm.style.left = '0px';
+                     dm.style.top = '0px';
+                }
+                console.log(dm.style.left);
+                console.log(dm.style.top);
                 this.cardLeftPosition = dm.style.left
                 this.cardTopPosition = dm.style.left
                 const data = {
@@ -154,6 +183,15 @@
             dragOver(event) {
                 event.preventDefault();
                 return false;
+            },
+
+            getWidth(event){
+                 var dm = document.getElementById('drag');
+                 this.resizeWidth = dm.style.width
+                 const data = {
+                    resize_width: dm.style.width,
+                }
+                this.updateProfile(data)
             },
 
             //***************FIRST NAME UPDATE onchange event*************************

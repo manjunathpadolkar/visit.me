@@ -22676,7 +22676,8 @@ __webpack_require__.r(__webpack_exports__);
       skillTags: [],
       social_links: [],
       cardLeftPosition: '',
-      cardTopPosition: ''
+      cardTopPosition: '',
+      resizeWidth: ''
     };
   },
   mounted: function mounted() {
@@ -22718,8 +22719,33 @@ __webpack_require__.r(__webpack_exports__);
     drop: function drop(event) {
       var offset = event.dataTransfer.getData("Text").split(',');
       var dm = document.getElementById('drag');
-      dm.style.left = event.clientX + parseInt(offset[0], 10) + 'px';
-      dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
+
+      if (event.clientX + parseInt(offset[0], 10) <= 210 && event.clientX + parseInt(offset[0], 10) >= -210 && event.clientY + parseInt(offset[1], 10) >= 0) {
+        dm.style.left = event.clientX + parseInt(offset[0], 10) + 'px';
+        dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
+      } else if (event.clientX + parseInt(offset[0], 10) < -210) {
+        dm.style.left = '-210px';
+
+        if (event.clientY + parseInt(offset[1], 10) >= 0) {
+          dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
+        } else {
+          dm.style.top = '0px';
+        }
+      } else if (event.clientX + parseInt(offset[0], 10) > 210) {
+        dm.style.left = '210px';
+
+        if (event.clientY + parseInt(offset[1], 10) >= 0) {
+          dm.style.top = event.clientY + parseInt(offset[1], 10) + 'px';
+        } else {
+          dm.style.top = '0px';
+        }
+      } else {
+        dm.style.left = '0px';
+        dm.style.top = '0px';
+      }
+
+      console.log(dm.style.left);
+      console.log(dm.style.top);
       this.cardLeftPosition = dm.style.left;
       this.cardTopPosition = dm.style.left;
       var data = {
@@ -22733,6 +22759,14 @@ __webpack_require__.r(__webpack_exports__);
     dragOver: function dragOver(event) {
       event.preventDefault();
       return false;
+    },
+    getWidth: function getWidth(event) {
+      var dm = document.getElementById('drag');
+      this.resizeWidth = dm.style.width;
+      var data = {
+        resize_width: dm.style.width
+      };
+      this.updateProfile(data);
     },
     //***************FIRST NAME UPDATE onchange event*************************
     updateProfile: function updateProfile(data) {
@@ -22846,7 +22880,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       fullNameColorError: '',
       fullNameFontError: '',
       fullNameSizeError: ''
-    }, _defineProperty(_ref, "locationError", ''), _defineProperty(_ref, "locationColorError", ''), _defineProperty(_ref, "locationFontError", ''), _defineProperty(_ref, "locationSizeError", ''), _defineProperty(_ref, "userProfile", []), _defineProperty(_ref, "isOpenName", true), _defineProperty(_ref, "isOpenLocation", true), _defineProperty(_ref, "isOpenSkill", true), _defineProperty(_ref, "isOpenDescription", true), _defineProperty(_ref, "isOpenBackground", true), _defineProperty(_ref, "bgDisplay", true), _defineProperty(_ref, "stretchImage", ''), _ref;
+    }, _defineProperty(_ref, "locationError", ''), _defineProperty(_ref, "locationColorError", ''), _defineProperty(_ref, "locationFontError", ''), _defineProperty(_ref, "locationSizeError", ''), _defineProperty(_ref, "userProfile", []), _defineProperty(_ref, "isOpenName", true), _defineProperty(_ref, "isOpenLocation", true), _defineProperty(_ref, "isOpenSkill", true), _defineProperty(_ref, "isOpenDescription", true), _defineProperty(_ref, "isOpenBackground", true), _defineProperty(_ref, "bgDisplay", true), _defineProperty(_ref, "stretchImage", ''), _defineProperty(_ref, "bgType", ''), _defineProperty(_ref, "bgTypeBtn", ''), _ref;
   },
   validations: function validations() {
     return {
@@ -23045,7 +23079,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       set: function set(value) {
         this.$store.commit('updateBgDisplay', value);
       }
-    }
+    },
+    bgTypeBtn: {
+      get: function get() {
+        return this.$store.state.bg_type_btn;
+      },
+      set: function set(bg_type_btn) {
+        this.$store.commit('updatebgTypeBtn', this.bg_type_btn);
+      }
+    } // bgTypeBtnChk(){
+    //    if(this.$store.state.bg_type_btn!=null){
+    //         this.bgTypeBtn=this.$store.state.bg_type_btn
+    //     }
+    //     return this.bgTypeBtn
+    // },
+
   },
   methods: {
     //Upload Profile pic
@@ -23109,6 +23157,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (e) {
         _this2.errors = e.errors;
       });
+      this.$store.dispatch('getProfile');
     },
     //***************Validate FIRST NAME UPDATE onchange event*************************
     updateFName: function updateFName(data) {
@@ -23265,32 +23314,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.updateProfile(data);
     },
     updateStretchImage: function updateStretchImage() {
+      this.bgTypeBtn = 'stretch';
       var data = {
-        bg_type: "object-fill"
+        bg_type: 'background-position: center; background-repeat: no-repeat; background-size: fill',
+        bg_type_btn: 'stretch'
       };
       this.updateProfile(data);
     },
     updateFillImage: function updateFillImage() {
+      this.bgTypeBtn = 'fill';
       var data = {
-        bg_type: "object-cover"
+        bg_type: 'background-repeat: no-repeat; background-size: cover;',
+        bg_type_btn: 'fill'
       };
       this.updateProfile(data);
     },
     updateFitImage: function updateFitImage() {
+      this.bgTypeBtn = 'fit';
       var data = {
-        bg_type: "object-contain"
+        bg_type: 'background-position: center; background-repeat: no-repeat; background-size: contain;',
+        bg_type_btn: 'fit'
       };
       this.updateProfile(data);
     },
     updateCenterImage: function updateCenterImage() {
+      this.bgTypeBtn = 'center';
       var data = {
-        bg_type: "bg-center object-contain"
+        bg_type: 'background-repeat: no-repeat; background-attachment: fixed; background-position: center;',
+        bg_type_btn: 'center'
       };
       this.updateProfile(data);
     },
     updateTileImage: function updateTileImage() {
+      this.bgTypeBtn = 'tile';
       var data = {
-        bg_type: "bg-left-top bg-repeat w-full"
+        bg_type: 'background-position: center; background-repeat: repeat;',
+        bg_type_btn: 'tile'
       };
       this.updateProfile(data);
     },
@@ -23342,6 +23401,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.description_font = this.$store.state.description_font;
       this.background_opacity = this.$store.state.background_opacity;
       this.bgDisplay = this.$store.state.bg_display;
+      this.bgType = this.$store.state.bg_type;
     }
   }
 }));
@@ -24680,13 +24740,22 @@ __webpack_require__.r(__webpack_exports__);
       isOpen: false,
       activeEdit: 'Home',
       card_x_coordinates: '',
-      card_y_coordinates: ''
+      card_y_coordinates: '',
+      bg_type: ''
     };
   },
   mounted: function mounted() {
     this.$store.dispatch('getProfile');
   },
-  methods: {}
+  computed: {
+    bgType: function bgType() {
+      if (this.$store.state.bg_type != null) {
+        this.bg_type = this.$store.state.bg_type;
+      }
+
+      return this.bg_type;
+    }
+  }
 }));
 
 /***/ }),
@@ -27362,10 +27431,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" different widths for visitor and registered user "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([" py-10 ", _ctx.$store.state.check_visitor ? 'w-3/5 px-10' : 'w-3/6']),
-    onDragover: _cache[4] || (_cache[4] = function () {
+    onDragover: _cache[5] || (_cache[5] = function () {
       return _ctx.dragOver && _ctx.dragOver.apply(_ctx, arguments);
     }),
-    onDrop: _cache[5] || (_cache[5] = function () {
+    onDrop: _cache[6] || (_cache[6] = function () {
       return _ctx.drop && _ctx.drop.apply(_ctx, arguments);
     })
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -27375,11 +27444,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _ctx.dragStart && _ctx.dragStart.apply(_ctx, arguments);
     }),
     id: "drag",
-    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)([{
+    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)([[{
       left: _ctx.$store.state.card_left_position
     }, {
       top: _ctx.$store.state.card_top_position
-    }])
+    }, {
+      width: _ctx.$store.state.resize_width
+    }], {
+      "resize": "horizontal",
+      "min-width": "450px",
+      "overflow": "auto",
+      "max-width": "800px"
+    }]),
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return _ctx.getWidth();
+    })
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Image "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "mx-auto shadow rounded-full h-40 w-40 sm:h-16 sm:w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 flex object-center object-cover border-none",
     src: '/storage/images/' + _ctx.$store.state.user_image,
@@ -27937,35 +28016,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.bg_display]]), _hoisted_20])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.$store.state.bg_type == 'object-cover' ? 'bg-blue-500 text-white' : '']),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.bgTypeBtn == 'fill' ? 'bg-blue-500 text-white' : '']),
     onClick: _cache[4] || (_cache[4] = function ($event) {
       return _ctx.updateFillImage();
     })
   }, "Fill", 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.$store.state.bg_type == 'object-contain' ? 'bg-blue-500 text-white' : '']),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.bgTypeBtn == 'fit' ? 'bg-blue-500 text-white' : '']),
     onClick: _cache[5] || (_cache[5] = function ($event) {
       return _ctx.updateFitImage();
     })
   }, "Fit", 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.$store.state.bg_type == 'object-fill' ? 'bg-blue-500 text-white' : '']),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.bgTypeBtn == 'stretch' ? 'bg-blue-500 text-white' : '']),
     onClick: _cache[6] || (_cache[6] = function ($event) {
       return _ctx.updateStretchImage();
     })
   }, "Stretch", 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.$store.state.bg_type == 'bg-left-top bg-repeat w-full h-32' ? 'bg-blue-500 text-white' : '']),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.bgTypeBtn == 'tile' ? 'bg-blue-500 text-white' : '']),
     onClick: _cache[7] || (_cache[7] = function ($event) {
       return _ctx.updateTileImage();
     })
   }, "Tile", 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.$store.state.bg_type == 'bg-center object-contain' ? 'bg-blue-500 text-white' : '']),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline", _ctx.bgTypeBtn == 'center' ? 'bg-blue-500 text-white' : '']),
     onClick: _cache[8] || (_cache[8] = function ($event) {
       return _ctx.updateCenterImage();
     })
@@ -31937,14 +32016,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" divide page into two parts "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Div for movable card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["w-2/3 flex justify-center bg-gray-500", _ctx.$store.state.bg_type]),
+        "class": "w-2/3 flex justify-center bg-gray-500",
         style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)([!_ctx.toggleBar ? 'width: 100%' : '', {
           opacity: _ctx.$store.state.background_opacity
-        }, [!_ctx.$store.state.bg_display ? {
+        }, !_ctx.$store.state.bg_display ? {
           'background-image': 'url(/storage/images/' + _ctx.$store.state.bg_image + ')'
-        } : '']])
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ,{'background-size': 'contain'} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_profile)], 6
-      /* CLASS, STYLE */
+        } : '', _ctx.bgType ? _ctx.bgType : ''])
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ,{'background-size': 'contain'} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_profile)], 4
+      /* STYLE */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" div for sidbar fixed "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
         onClick: _cache[0] || (_cache[0] = function ($event) {
           return _ctx.activeEdit = 'Home';
@@ -33325,7 +33404,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       skill_tags: [],
       check_visitor: false,
       bg_display: '',
-      bg_type: ''
+      bg_type: '',
+      bg_type_btn: '',
+      resize_width: ''
     };
   },
   getters: {},
@@ -33415,6 +33496,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       state.background_opacity = data.background_opacity;
       state.bg_display = data.bg_display;
       state.bg_type = data.bg_type;
+      state.bg_type_btn = data.bg_type_btn;
+      state.resize_width = data.resize_width;
     },
     setSocialLinks: function setSocialLinks(state, data) {
       state.social_links = data;
@@ -33516,6 +33599,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     state.background_opacity = data;
   }), _defineProperty(_mutations, "updateBgDisplay", function updateBgDisplay(state, data) {
     state.bg_display = data;
+  }), _defineProperty(_mutations, "updatebgTypeBtn", function updatebgTypeBtn(state, data) {
+    state.bg_type_btn = data;
   }), _mutations)
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);

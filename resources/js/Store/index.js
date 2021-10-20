@@ -53,6 +53,8 @@ const store = createStore({
         check_visitor:false,
         bg_display:'',
         bg_type:'',
+        bg_type_btn:'',
+        resize_width:'',
       }
   } ,
 
@@ -152,6 +154,8 @@ const store = createStore({
         state.background_opacity = data.background_opacity
         state.bg_display = data.bg_display
         state.bg_type = data.bg_type
+        state.bg_type_btn = data.bg_type_btn
+        state.resize_width = data.resize_width
       },
 
       setSocialLinks(state, data){
@@ -292,6 +296,10 @@ const store = createStore({
 
       updateBgDisplay(state, data){
         state.bg_display = data
+      },
+
+      updatebgTypeBtn(state, data){
+        state.bg_type_btn = data
       },
   },
 

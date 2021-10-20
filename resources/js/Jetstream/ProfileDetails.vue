@@ -30,11 +30,11 @@
                     </div>
                 </div>
                 <div class="flex justify-center rounded-lg text-sm mb-4 mt-4" role="group">
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-cover' ? 'bg-blue-500 text-white': ''" @click="updateFillImage()">Fill</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-contain' ? 'bg-blue-500 text-white': ''" @click="updateFitImage()">Fit</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='object-fill' ? 'bg-blue-500 text-white': ''" @click="updateStretchImage()">Stretch</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type =='bg-left-top bg-repeat w-full h-32' ? 'bg-blue-500 text-white': ''" @click="updateTileImage()">Tile</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline"  :class="$store.state.bg_type =='bg-center object-contain' ? 'bg-blue-500 text-white': ''" @click="updateCenterImage()">Center</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fill' ? 'bg-blue-500 text-white' : ''"  @click="updateFillImage()">Fill</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fit' ? 'bg-blue-500 text-white' : ''" @click="updateFitImage()">Fit</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='stretch' ? 'bg-blue-500 text-white' : ''" @click="updateStretchImage()">Stretch</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='tile' ? 'bg-blue-500 text-white' : ''" @click="updateTileImage()">Tile</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='center' ? 'bg-blue-500 text-white' : ''" @click="updateCenterImage()">Center</button>
                 </div>
             </div>
             <div class="p-6">
@@ -329,6 +329,8 @@
                 isOpenBackground:true,
                 bgDisplay:true,
                 stretchImage:'',
+                bgType:'',
+                bgTypeBtn:'',
                                
             }
         },
@@ -501,6 +503,22 @@
                     this.$store.commit('updateBgDisplay', value)
                 },
             },
+
+            bgTypeBtn: {
+                get () {
+                    return this.$store.state.bg_type_btn
+                },
+                set (bg_type_btn) {
+                    this.$store.commit('updatebgTypeBtn', this.bg_type_btn)
+                },
+            },
+
+            // bgTypeBtnChk(){
+            //    if(this.$store.state.bg_type_btn!=null){
+            //         this.bgTypeBtn=this.$store.state.bg_type_btn
+            //     }
+            //     return this.bgTypeBtn
+            // },
         },
         methods: {
             //Upload Profile pic
@@ -568,7 +586,7 @@
                 .catch(e => {
                     this.errors = e.errors;
                 });
-                
+                this.$store.dispatch('getProfile')
             },
 
             //***************Validate FIRST NAME UPDATE onchange event*************************
@@ -743,36 +761,46 @@
             },
 
             updateStretchImage(){
+                this.bgTypeBtn = 'stretch'
                 const data = {
-                    bg_type : "object-fill"
+                    bg_type : 'background-position: center; background-repeat: no-repeat; background-size: fill',
+                    bg_type_btn : 'stretch'
                 }
                 this.updateProfile(data)
             },
 
             updateFillImage(){
+                this.bgTypeBtn = 'fill'
                 const data = {
-                    bg_type : "object-cover"
+                    bg_type : 'background-repeat: no-repeat; background-size: cover;',
+                    bg_type_btn : 'fill'
                 }
                 this.updateProfile(data)
             },
 
             updateFitImage(){
+                this.bgTypeBtn = 'fit'
                 const data = {
-                    bg_type : "object-contain"
+                    bg_type : 'background-position: center; background-repeat: no-repeat; background-size: contain;',
+                    bg_type_btn : 'fit'
                 }
                 this.updateProfile(data)
             },
 
             updateCenterImage(){
+                this.bgTypeBtn = 'center'
                 const data = {
-                    bg_type : "bg-center object-contain"
+                    bg_type : 'background-repeat: no-repeat; background-attachment: fixed; background-position: center;',
+                    bg_type_btn : 'center'
                 }
                 this.updateProfile(data)
             },
 
             updateTileImage(){
+                this.bgTypeBtn = 'tile'
                 const data = {
-                    bg_type : "bg-left-top bg-repeat w-full"
+                    bg_type : 'background-position: center; background-repeat: repeat;',
+                    bg_type_btn : 'tile'
                 }
                 this.updateProfile(data)
             },
@@ -828,7 +856,7 @@
                 this.description_font = this.$store.state.description_font
                 this.background_opacity = this.$store.state.background_opacity
                 this.bgDisplay = this.$store.state.bg_display
-                
+                this.bgType = this.$store.state.bg_type
             }
         },
     })
