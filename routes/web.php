@@ -20,6 +20,7 @@ use Inertia\Inertia;
 //routes for unregistered users
 Route::get('visit/{username}', [VisitorController::class, 'showUser'])->name('visitor.show-user');
 Route::get('user/profile/{id}', [VisitorController::class, 'getVisitorProfile'])->name('visitor.get-visitor-profile');
+Route::post('visit/email/send-message', [VisitorController::class, 'sendVisitorMessage'])->name('visitor.send-message');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -35,7 +36,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::get('/profile/edit/{username}', function () {
-        return Inertia::render('Profile');
+        $notifications = auth()->user()->unreadNotifications;
+        return Inertia::render('Profile', ['notifications'=> compact('notifications')]);
     })->name('username');
     Route::resource('userprofiles', UserProfileController::class);
     Route::get('user/getuser', [UserProfileController::class, 'getUser'])->name('users.getUsername');

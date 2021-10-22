@@ -138,35 +138,35 @@
             drop(event) {
                 var offset = event.dataTransfer.getData("Text").split(',');
                 var dm = document.getElementById('drag');
-                if((event.clientX + parseInt(offset[0], 10))<=210 && (event.clientX + parseInt(offset[0], 10))>=-210 && (event.clientY + parseInt(offset[1], 10))>=0)
+                if((event.clientX + parseInt(offset[0], 10))<=210 && (event.clientX + parseInt(offset[0], 10))>=-315 && (event.clientY + parseInt(offset[1], 10))>=-50)
                 {
                     dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
                     dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
                 }
-                else if((event.clientX + parseInt(offset[0], 10))<-210){
-                    dm.style.left = '-210px';
-                    if((event.clientY + parseInt(offset[1], 10))>=0)
+                else if((event.clientX + parseInt(offset[0], 10))<-315){
+                    dm.style.left = '-315px';
+                    if((event.clientY + parseInt(offset[1], 10))>=-50)
                     {
                        dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px'; 
                     }
                     else{
-                        dm.style.top = '0px';
+                        dm.style.top = '-50px';
                     }
                 } 
                 else if((event.clientX + parseInt(offset[0], 10))>210){
                     dm.style.left = '210px';
-                    if((event.clientY + parseInt(offset[1], 10))>=0)
+                    if((event.clientY + parseInt(offset[1], 10))>=-50)
                     {
                        dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px'; 
                     }
                     else{
-                        dm.style.top = '0px';
+                        dm.style.top = '-50px';
                     }
                 }   
-                else{
-                     dm.style.left = '0px';
-                     dm.style.top = '0px';
-                }
+                // else{
+                //      dm.style.left = '0px';
+                //      dm.style.top = '-50px';
+                // }
                 console.log(dm.style.left);
                 console.log(dm.style.top);
                 this.cardLeftPosition = dm.style.left

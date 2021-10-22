@@ -5,10 +5,25 @@
                 <h2 class="flex justify-center font-extrabold text-4xl">CONTACT</h2>
             </div>
             <div class=" bg-center">
-                <textarea class="rounded-lg w-full mr-0 sm:mr-4 " name="message" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                <textarea class="rounded-lg w-full mr-0 sm:mr-4 text-black" name="message" id="message" cols="30" rows="10" placeholder="Message" v-model="form.message"></textarea>
                 <div class="mt-6"> 
-                    <button class="bg-green-600 text-secondary-900 text-white p-2 rounded py-2 px-3 uppercase text-md cursor-pointer tracking-wider hover:shadow-inner transform hover:scale-100 hover:opacity-80 transition ease-out duration-300">Send</button>
+                    <button class="bg-green-600 text-secondary-900 text-white p-2 rounded py-2 px-3 uppercase text-md cursor-pointer tracking-wider hover:shadow-inner transform hover:scale-100 hover:opacity-80 transition ease-out duration-300" @click="sendEmail(form)">Send</button>
                 </div>
+                 <!-- Error/Success messages -->
+                <transition-group name="fade">
+                    <!-- <div v-if="errors" class="bg-red-500 text-white py-2 px-4 pr-0 mx-6 rounded font-bold mt-4 shadow-lg">
+                        <div v-for="(v, k) in errors" :key="k">
+                            <p class="text-sm">
+                            {{ v }}
+                            </p>
+                        </div>
+                    </div> -->
+                    <div v-if="message" class="bg-green-500 text-white py-2 px-4 pr-0 mx-6 rounded font-bold mt-4 shadow-lg">
+                            <p class="text-sm">
+                            {{ message }}
+                            </p>
+                    </div>
+                </transition-group>
             </div> 
             <div class="bg-green-700 p-10 text-white rounded-lg">
                 <h2 class="font-bold text-xl">Address</h2>
@@ -36,12 +51,51 @@
     import { defineComponent, ref } from 'vue'
     import JetApplicationLogo from '@/Jetstream/ApplicationLogo.vue'
     import MyBtn from '../MyComponents/MyBtn.vue'
+    import useVuelidate from '@vuelidate/core'
+    import { required, helpers, email } from '@vuelidate/validators'
 
     export default defineComponent({
         components: {
             JetApplicationLogo,
             MyBtn,
         },
+        data(){
+            return{
+                form:{
+                    message:'',
+                },
+                message:'',
+            }
+        },
+        validations () {
+            return {
+               form:{
+                    message:{ required },
+                } 
+            }
+        },
+        methods:{
+            sendEmail(data){
+                data._method = 'post';
+                axios.post(route('visitor.send-message'), data)
+                .then((response)=>{
+                    if(response.data.errors){
+                        this.errors = response.data.errors
+                        setTimeout(() => { this.errors = null;}, 2000);
+                    }
+                    else if(response.data.message){
+                        this.message = response.data.message
+                        setTimeout(() => { this.message = null; this.form.message=null}, 2000);
+                        self.$store.dispatch('getProfile')
+                        this.getProfile();
+                    }
+                })
+                .catch(e => {
+                    this.errors = e.errors;
+                });
+                this.$store.dispatch('getProfile')
+            }
+        }
     })
 </script>
 

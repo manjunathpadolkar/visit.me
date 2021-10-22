@@ -8,7 +8,7 @@
                         <span v-else class=" text-base leading-normal "> <img src="/images/profile-pic.png" class="w-32 h-32 rounded-full opacity-50 hover:opacity-100"></span>
                         <input type='file' ref="profilePic" class="hidden" @change="uploadProfilePic()"/>
                     </label>
-                </div>
+                </div> 
             </div>
             <div class="p-6">
                 <div class=" flex justify-center pb-2"> 

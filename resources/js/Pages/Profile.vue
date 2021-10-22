@@ -7,7 +7,7 @@
                     <profile/>
                 </div>
           <!-- div for sidbar fixed -->     
-            <div v-show="toggleBar" class=" h-screen overflow-y-auto w-1/3 fixed top-16 z-10 right-0 pb-12 border-2 bg-gray-200" >
+            <div v-show="toggleBar" class=" h-screen overflow-y-auto w-1/3 fixed top-16 z-10 right-0 pb-12 border-2 bg-white" >
                 <nav class=" overflow-visible">
                      <div class=" flex justify-between border-b-2 px-10 py-5 overflow-visible">
                         <div  @click="activeEdit='Home'" class=" font-semibold rounded text-base cursor-pointer" :class="activeEdit==='Home' ? 'text-blue-900':''">HOME</div>
@@ -47,6 +47,9 @@
             SocialLinks,
             ProfileDetails,
         },
+        props: {
+            notifications: Array,
+        },
         data(){
             return{
                 toggleBar: false,
@@ -54,12 +57,14 @@
                 activeEdit: 'Home',
                 card_x_coordinates:'',
                 card_y_coordinates:'',
-                bg_type:''
+                bg_type:'',
+                notification:this.notifications
             }
         },
         mounted()
         {
             this.$store.dispatch('getProfile')
+            console.log(this.notification);
         },
 
         computed:{

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\SocialLinks;
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Notifications\SendEmailMessage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class VisitorController extends Controller
@@ -36,6 +38,26 @@ class VisitorController extends Controller
         $user = User::where('user_name',$username)->first();
         $userProfile = UserProfile::where('user_id', $user->id)->first();
         return Inertia::render('Visitor', ['userProfile' => $userProfile]);
+    }
+
+    public function sendVisitorMessage(Request $request)
+    {
+        $user = User::first();
+        $sendMessageData = [
+            'body'=>'You received a new notification',
+            'sendMessageText'=>$request->message,
+            'url'=>url('/'),
+            'thankyou'=>'You can reply back to the user.',
+        ];
+
+        // $user->notify(new SendEmailMessage($sendMessageData));
+        Notification::send($user, new SendEmailMessage($sendMessageData));
+        
+        // Mail::to('newuser@example.com')->send(new SendVisitMeMail());
+
+        return response()->json([
+            'message' =>'Message sent successfully!' 
+        ], Response::HTTP_OK);
     }
 
     /**
