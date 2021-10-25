@@ -81,6 +81,47 @@
                                     </template>
                                 </jet-dropdown>
                             </div>
+                            <!-- Notifications Dropdown -->
+                            <div class="ml-3 relative">
+                                <jet-dropdown align="right" width="48">
+                                    <template #trigger>
+                                        <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                            <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
+                                        </button>
+
+                                        <span v-else class="inline-flex rounded-md">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                                {{ $page.props.user.name }}
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                                            </button>
+                                        </span>
+                                    </template>
+
+                                    <template #content>
+                                        <!-- Account Management -->
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Notification
+                                        </div>
+
+                                        <jet-dropdown-link :href="route('profile.show')">
+                                            Profile
+                                        </jet-dropdown-link>
+
+                                        <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
+                                            API Tokens
+                                        </jet-dropdown-link>
+
+                                        <div class="border-t border-gray-100"></div>
+
+                                        <!-- Authentication -->
+                                        <form @submit.prevent="logout">
+                                            <jet-dropdown-link as="button">
+                                                Log Out
+                                            </jet-dropdown-link>
+                                        </form>
+                                    </template>
+                                </jet-dropdown>
+                            </div>
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
                                 <jet-dropdown align="right" width="48">
@@ -245,6 +286,7 @@
     export default defineComponent({
         props: {
             title: String,
+            showNotification: Array
         },
 
         components: {
@@ -259,11 +301,15 @@
         },
         mounted() {
             this.getUsers()
+
+            console.log("This is app vue")
+            console.log(this.notification)
         },
         data() {
             return {
                 showingNavigationDropdown: false,
                 user_name:'',
+                notification: this.showNotification
             }
         },
 

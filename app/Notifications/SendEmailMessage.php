@@ -43,7 +43,12 @@ class SendEmailMessage extends Notification
     {
         return (new MailMessage)
                     ->line($this->sendMessageData['body'])
-                    ->action($this->sendMessageData['sendMessageText'], $this->sendMessageData['url'])
+                    ->action($this->sendMessageData['sendMessageText'],
+                     $this->sendMessageData['url'],
+                     $this->sendMessageData['visitorFirstName'],
+                     $this->sendMessageData['visitorLastName'],
+                     $this->sendMessageData['visitorEmail'],
+                     )
                     ->line($this->sendMessageData['thankyou']);
     }
 
@@ -57,6 +62,9 @@ class SendEmailMessage extends Notification
     {
         return [
             'message' => $this->sendMessageData['sendMessageText'],
+            'visitorFirstName' => $this->sendMessageData['visitorFirstName'],
+            'visitorLastName' => $this->sendMessageData['visitorLastName'],
+            'visitorEmail' => $this->sendMessageData['visitorEmail'],
         ];
     }
 }

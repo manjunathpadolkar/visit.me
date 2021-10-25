@@ -33,11 +33,12 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
+        $notifications = auth()->user()->unreadNotifications;
+        return Inertia::render('Dashboard',['notifications'=> compact('notifications')]);
     })->name('dashboard');
     Route::get('/profile/edit/{username}', function () {
-        $notifications = auth()->user()->unreadNotifications;
-        return Inertia::render('Profile', ['notifications'=> compact('notifications')]);
+        
+        return Inertia::render('Profile');
     })->name('username');
     Route::resource('userprofiles', UserProfileController::class);
     Route::get('user/getuser', [UserProfileController::class, 'getUser'])->name('users.getUsername');

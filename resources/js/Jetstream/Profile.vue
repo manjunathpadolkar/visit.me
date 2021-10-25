@@ -175,7 +175,9 @@
                     card_left_position: dm.style.left,
                     card_top_position :  dm.style.top
                 }
-                this.updateProfile(data)
+                if(!this.$store.state.registeredUser){
+                    this.updateProfile(data)
+                }
                 event.preventDefault();
                 return false;
             },

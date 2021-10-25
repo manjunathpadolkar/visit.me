@@ -4,6 +4,7 @@ import { createStore } from 'vuex'
 const store = createStore({
   state () {
       return{
+        user_id : '',
         first_name : '',
         last_name : '',
         about_id : '',
@@ -55,6 +56,7 @@ const store = createStore({
         bg_type:'',
         bg_type_btn:'',
         resize_width:'',
+        registeredUser:true,
       }
   } ,
 
@@ -96,6 +98,7 @@ const store = createStore({
         // Get all data of requested user
         context.commit('setProfile', response.data.userProfile)
         context.commit('setSocialLinks', response.data.socialLinks)
+        context.commit('setRegisteredUser', response.data.registeredUser)
         context.commit('setCheckVisitor')
       })
       .catch((error)=>{
@@ -108,6 +111,7 @@ const store = createStore({
 
   mutations: {
       setProfile(state, data){
+        state.user_id = data.user_id
         state.first_name = data.first_name
         state.last_name = data.last_name
         state.about_id = data.about_id 
@@ -164,6 +168,10 @@ const store = createStore({
 
       setCheckVisitor(state){
         state.check_visitor = true 
+      },
+
+      setRegisteredUser(state,data){
+        state.registeredUser = data 
       },
 
       updateFirstName(state, data){

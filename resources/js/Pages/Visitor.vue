@@ -11,7 +11,7 @@
     import store from '../Store/index.js'
 
     export default defineComponent({
-        props:['userProfile'],
+        props:['userProfile','visitor','registeredUser','socialLinks'],
         components: {
             AppLayout,
             Profile

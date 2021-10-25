@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="Dashboard">
+    <app-layout title="Dashboard" :showNotification="notification">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight"> 
                 Dashboard
@@ -22,9 +22,31 @@
     import Welcome from '@/Jetstream/Welcome.vue'
 
     export default defineComponent({
+        
+         props: {
+            notifications: Array,
+        },
         components: {
             AppLayout,
             Welcome,
         },
+
+        mounted() {
+            console.log(this.notification)
+            this.passEvent()
+        },
+
+        data() {
+            return {
+                notification: this.notifications
+            }
+        },
+
+        methods:{
+            passEvent()
+            {
+                this.$emit('getNotification', this.notification)
+            }
+        }
     })
 </script>

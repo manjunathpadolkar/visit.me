@@ -47,9 +47,6 @@
             SocialLinks,
             ProfileDetails,
         },
-        props: {
-            notifications: Array,
-        },
         data(){
             return{
                 toggleBar: false,
@@ -58,7 +55,7 @@
                 card_x_coordinates:'',
                 card_y_coordinates:'',
                 bg_type:'',
-                notification:this.notifications
+                
             }
         },
         mounted()
