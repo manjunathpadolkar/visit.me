@@ -1,7 +1,7 @@
 <template>
     <!-- different widths for visitor and registered user -->
     <div class=" py-10 "   @dragover="dragOver" @drop="drop" :class=" $store.state.check_visitor ? 'w-3/5 px-10' : 'w-3/6'">
-        <div class=" bg-gray-500 text-white border-4 border-white opacity-50 relative" draggable="true" @dragstart="dragStart" id="drag" :style="[{left: $store.state.card_left_position},{top: $store.state.card_top_position}, {width: $store.state.resize_width}]" style=" resize: horizontal; min-width: 450px; overflow: auto; max-width: 800px;" @click="getWidth()">
+        <div class=" bg-gray-500 text-white border-4 border-white opacity-50 relative" draggable="true" @dragstart="dragStart" id="drag" :style="[{left: $store.state.card_left_position},{top: $store.state.card_top_position}, {width: $store.state.resize_width}]" style=" resize: horizontal; min-width: 450px; overflow: auto; max-width: 800px;" @click.self="getWidth()">
             <!-- Image -->
             <div class="mt-10 py-10">
                 <img class="mx-auto shadow rounded-full h-40 w-40 sm:h-16 sm:w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 flex object-center object-cover border-none" :src="'/storage/images/'+$store.state.user_image" alt="profile">
@@ -163,10 +163,6 @@
                         dm.style.top = '-50px';
                     }
                 }   
-                // else{
-                //      dm.style.left = '0px';
-                //      dm.style.top = '-50px';
-                // }
                 console.log(dm.style.left);
                 console.log(dm.style.top);
                 this.cardLeftPosition = dm.style.left
@@ -188,6 +184,7 @@
             },
 
             getWidth(event){
+                alert("hello")
                  var dm = document.getElementById('drag');
                  this.resizeWidth = dm.style.width
                  const data = {

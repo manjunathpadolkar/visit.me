@@ -33,14 +33,17 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('dashboard', function () {
-        $notifications = auth()->user()->unreadNotifications;
-        return Inertia::render('Dashboard',['notifications'=> compact('notifications')]);
+       
+        return Inertia::render('Dashboard');
+        // return Inertia::render('Dashboard',['notifications'=> compact('notifications')]);
     })->name('dashboard');
     Route::get('/profile/edit/{username}', function () {
         
         return Inertia::render('Profile');
     })->name('username');
     Route::resource('userprofiles', UserProfileController::class);
+    Route::get('user/getNotifications', [UserProfileController::class, 'getNotifications'])->name('users.getNotifications');
+    Route::post('user/mark-as-read', [UserProfileController::class, 'markNotification'])->name('users.markNotification');
     Route::get('user/getuser', [UserProfileController::class, 'getUser'])->name('users.getUsername');
     Route::get('user/getProfile', [UserProfileController::class, 'getProfile'])->name('users.getProfile');
     Route::put('user/update/update-profile', [UserProfileController::class, 'updateProfile'])->name('users.update-profile');

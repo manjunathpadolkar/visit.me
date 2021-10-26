@@ -57,6 +57,7 @@ const store = createStore({
         bg_type_btn:'',
         resize_width:'',
         registeredUser:true,
+        notifications:[],
       }
   } ,
 
@@ -65,6 +66,20 @@ const store = createStore({
   },
 
   actions:{
+
+    getNotifications(context) {
+      return new Promise((resolve, reject) => {
+        axios.get(route('users.getNotifications'))
+        .then((response)=>{
+          context.commit('setNotifications', response.data.notifications)
+          resolve()
+        })
+        .catch((error)=>{
+            console.log(error)
+            this.errors = 'Error retriving data!'
+        })
+      })
+    },
 
     getSocialLinks (context) {
       return new Promise((resolve, reject) => {
@@ -309,6 +324,10 @@ const store = createStore({
       updatebgTypeBtn(state, data){
         state.bg_type_btn = data
       },
+
+      setNotifications(state,data){
+        state.notifications = data
+      }
   },
 
   

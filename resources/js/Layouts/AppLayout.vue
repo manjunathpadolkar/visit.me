@@ -1,5 +1,32 @@
 <template>
     <div>
+        <jet-dialog-modal :show="showNotificationPopUp"  @close="showNotificationPopUp = false">
+            <template #title> New Notification </template>
+
+            <template #content>
+                <p class=" inline-block font-semibold">From</p>{{ messageDetails.data.visitorFirstName }}<br>
+                <p class=" inline-block text-xs font-semibold">From</p>{{ messageDetails.data.visitorEmail }}<br>
+                <p class=" mt-8 text-center inline-block font-semibold">{{ messageDetails.data.message }}</p>
+            </template>
+
+            <template #footer>
+                <jet-secondary-button
+                class="cursor-pointer px-4 py-2 dialog_cancel_button uppercase"
+                @click="showNotificationPopUp = false"
+                >
+                CANCEL
+                </jet-secondary-button>
+
+                <jet-button
+                class="dialog_delete_button button_hover cursor-pointer ml-2 uppercase"
+                @click="markAsRead(messageDetails)"
+                >
+                Mark as read
+                </jet-button>
+            </template>
+        </jet-dialog-modal> 
+    </div>
+    <div>
         <Head :title="title" />
         <jet-banner />
         <div class="min-h-screen relative">
@@ -83,42 +110,29 @@
                             </div>
                             <!-- Notifications Dropdown -->
                             <div class="ml-3 relative">
-                                <jet-dropdown align="right" width="48">
+                                <jet-dropdown align="right" width="64">
                                     <template #trigger>
-                                        <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                            <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
-                                        </button>
-
-                                        <span v-else class="inline-flex rounded-md">
+                                        <span  class="inline-flex rounded-md relative">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
-                                                {{ $page.props.user.name }}
                                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                                                <span class=" rounded-full bg-red-600 px-1 text-white text-xs absolute top-1 right-0">{{  $store.state.notifications.length  }}</span>
                                             </button>
                                         </span>
                                     </template>
 
                                     <template #content>
                                         <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Notification
-                                        </div>
-
-                                        <jet-dropdown-link :href="route('profile.show')">
-                                            Profile
-                                        </jet-dropdown-link>
-
-                                        <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
-                                            API Tokens
-                                        </jet-dropdown-link>
-
-                                        <div class="border-t border-gray-100"></div>
-
-                                        <!-- Authentication -->
-                                        <form @submit.prevent="logout">
-                                            <jet-dropdown-link as="button">
-                                                Log Out
-                                            </jet-dropdown-link>
-                                        </form>
+                                       <div class=" w-72 ">
+                                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                            Notifications
+                                            </div>
+                                            <div>
+                                                <jet-dropdown-link v-for="notification in $store.state.notifications" :key="notification.id" @click="showNotificationPopUpModal(notification)">
+                                                You hav a new message from <p class=" inline-block font-semibold ">{{ notification.data.visitorFirstName }}</p>
+                                                </jet-dropdown-link>  
+                                            </div>  
+                                       </div>
+                                        <!--  -->
                                     </template>
                                 </jet-dropdown>
                             </div>
@@ -264,13 +278,13 @@
                     <slot name="header"></slot>
                 </div>
             </header>
-
             <!-- Page Content -->
-            <main class="mt-16 bg-gray-200">
+            <main class="mt-16 bg-gray-200">                 
                 <slot></slot>
             </main>
         </div>
     </div>
+     
 </template>
 
 <script>
@@ -278,6 +292,9 @@
     import JetApplicationMark from '@/Jetstream/ApplicationMark.vue'
     import JetBanner from '@/Jetstream/Banner.vue'
     import JetDropdown from '@/Jetstream/Dropdown.vue'
+    import JetDialogModal from '@/Jetstream/DialogModal.vue'
+    import JetButton from '@/Jetstream/Button.vue'
+    import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
     import JetDropdownLink from '@/Jetstream/DropdownLink.vue'
     import JetNavLink from '@/Jetstream/NavLink.vue'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'
@@ -286,7 +303,6 @@
     export default defineComponent({
         props: {
             title: String,
-            showNotification: Array
         },
 
         components: {
@@ -297,23 +313,34 @@
             JetDropdownLink,
             JetNavLink,
             JetResponsiveNavLink,
+            JetDialogModal,
+            JetButton,
+            JetSecondaryButton,
             Link,
         },
         mounted() {
+            this.$store.dispatch('getNotifications')
+            console.log(this.$store.state.notifications)
             this.getUsers()
-
-            console.log("This is app vue")
-            console.log(this.notification)
+            // console.log(this.$store.state.showNotification)
+            // console.log(this.notifications)
         },
         data() {
             return {
+                showNotificationPopUp : false,
                 showingNavigationDropdown: false,
                 user_name:'',
-                notification: this.showNotification
+                messageDetails:''
             }
         },
 
         methods: {
+
+            showNotificationPopUpModal(data){
+                this.showNotificationPopUp=true
+                this.messageDetails=data
+            },
+
             switchToTeam(team) {
                 this.$inertia.put(route('current-team.update'), {
                     'team_id': team.id
@@ -326,7 +353,6 @@
                  axios.get(route('users.getUsername'))
                 .then((response)=>{
                     this.user_name = response.data.user_name
-                    console.log(this.user_name)
                 })
                 .catch((error)=>{
                     console.log(error)
@@ -337,6 +363,19 @@
             logout() {
                 this.$inertia.post(route('logout'));
             },
+
+            markAsRead(data){
+                    data._method = 'post';
+                    axios.post(route('users.markNotification'), data)
+                    .then((response)=>{
+                            this.message = response.data.message
+                            setTimeout(() => {this.message = null; this.reset()}, 2000);
+                            self.$store.dispatch('getNotifications')
+                    })
+                    .catch(e => {
+                        this.errors = e.errors;
+                    });
+            }
         }
     })
 </script>

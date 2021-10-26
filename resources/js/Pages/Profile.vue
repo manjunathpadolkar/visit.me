@@ -31,7 +31,7 @@
 
 <script>
     import { defineComponent } from 'vue'
-    import AppLayout from '@/Layouts/AppLayout.vue'
+    import AppLayout from '../Layouts/AppLayout.vue'
     import Profile from '@/Jetstream/Profile.vue'
     import MyBtn from '../MyComponents/MyBtn.vue'
     import ProfileDetails from '../Jetstream/ProfileDetails.vue'
@@ -61,7 +61,6 @@
         mounted()
         {
             this.$store.dispatch('getProfile')
-            console.log(this.notification);
         },
 
         computed:{

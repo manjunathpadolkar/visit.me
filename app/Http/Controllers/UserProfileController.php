@@ -23,6 +23,26 @@ class UserProfileController extends Controller
         
     }
 
+    public function getNotifications()
+    {
+        $notifications = auth()->user()->unreadNotifications;
+        return response()->json([
+            'notifications' => $notifications,
+        ], Response::HTTP_OK);
+    }
+
+    public function markNotification(Request $request)
+    {
+        auth()->user()
+            ->unreadNotifications
+            ->when($request->input('id'), function ($query) use ($request) {
+                return $query->where('id', $request->input('id'));
+            })
+            ->markAsRead();
+
+        return response()->noContent();
+    }
+
     public function getUser()
     {
         $user = auth()->user(); 
