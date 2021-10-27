@@ -8,7 +8,6 @@
     import { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
     import Profile from '@/Jetstream/Profile.vue'
-    import store from '../Store/index.js'
 
     export default defineComponent({
         props:['userProfile','visitor','registeredUser','socialLinks'],
@@ -31,7 +30,7 @@
             //Fetch all the data from server first and update the store.
             async getVisitor() {
                     let visitor = await Promise.all([
-                        store.dispatch('getVisitorProfile', this.userProfile.user_id)
+                        this.$store.dispatch('getVisitorProfile', this.userProfile.user_id)
                     ]);
                     if(visitor){
                         this.receivedData=true

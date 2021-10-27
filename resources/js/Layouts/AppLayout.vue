@@ -1,32 +1,7 @@
 <template>
     <div>
-        <jet-dialog-modal :show="showNotificationPopUp"  @close="showNotificationPopUp = false">
-            <template #title> New Notification </template>
+        
 
-            <template #content>
-                <p class=" inline-block font-semibold">From</p>{{ messageDetails.data.visitorFirstName }}<br>
-                <p class=" inline-block text-xs font-semibold">From</p>{{ messageDetails.data.visitorEmail }}<br>
-                <p class=" mt-8 text-center inline-block font-semibold">{{ messageDetails.data.message }}</p>
-            </template>
-
-            <template #footer>
-                <jet-secondary-button
-                class="cursor-pointer px-4 py-2 dialog_cancel_button uppercase"
-                @click="showNotificationPopUp = false"
-                >
-                CANCEL
-                </jet-secondary-button>
-
-                <jet-button
-                class="dialog_delete_button button_hover cursor-pointer ml-2 uppercase"
-                @click="markAsRead(messageDetails)"
-                >
-                Mark as read
-                </jet-button>
-            </template>
-        </jet-dialog-modal> 
-    </div>
-    <div>
         <Head :title="title" />
         <jet-banner />
         <div class="min-h-screen relative">
@@ -122,15 +97,23 @@
 
                                     <template #content>
                                         <!-- Account Management -->
-                                       <div class=" w-72 ">
+                                       <div class=" w-72"  :class="$store.state.notifications.length > 5 ? ' h-60 overflow-y-scroll' : ''">
                                             <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Notifications
+                                                Notifications
                                             </div>
                                             <div>
-                                                <jet-dropdown-link v-for="notification in $store.state.notifications" :key="notification.id" @click="showNotificationPopUpModal(notification)">
-                                                You hav a new message from <p class=" inline-block font-semibold ">{{ notification.data.visitorFirstName }}</p>
+                                                <jet-dropdown-link v-for="notification in $store.state.notifications" :key="notification.id" @click.prevent="markAsRead(notification)" >
+                                                You hav a new message from{{ showNotificationPopUp }} <p class=" inline-block font-semibold ">{{ notification.data.visitorFirstName }}</p>
                                                 </jet-dropdown-link>  
-                                            </div>  
+                                            </div> 
+                                            <div>
+                                                <jet-dropdown-link v-if="$store.state.notifications.length > 0" @click="markAllAsRead()">
+                                                <p class=" inline-block text-xs font-semibold ">Mark all as read</p>
+                                                </jet-dropdown-link>  
+                                                <div v-else>
+                                                <p class=" inline-block px-4 py-2 text-xs font-semibold ">No new notifications</p>
+                                                </div>  
+                                            </div> 
                                        </div>
                                         <!--  -->
                                     </template>
@@ -283,6 +266,22 @@
                 <slot></slot>
             </main>
         </div>
+        <jet-dialog-modal :show="showNotificationPopUp" >
+            <template #title> New Notification </template>
+            <template #content>
+                <!-- <p class=" inline-block font-semibold">From</p>{{ messageDetails.data.visitorFirstName }}<br>
+                <p class=" inline-block text-xs font-semibold">From</p>{{ messageDetails.data.visitorEmail }}<br>
+                <p class=" mt-8 text-center inline-block font-semibold">{{ messageDetails.data.message }}</p> -->
+            </template>
+            <template #footer>
+                <jet-secondary-button
+                class="cursor-pointer px-4 py-2 dialog_cancel_button uppercase"
+                @click="showNotificationPopUp = false"
+                >
+                    CANCEL
+                </jet-secondary-button>
+            </template>
+        </jet-dialog-modal> 
     </div>
      
 </template>
@@ -336,10 +335,6 @@
 
         methods: {
 
-            showNotificationPopUpModal(data){
-                this.showNotificationPopUp=true
-                this.messageDetails=data
-            },
 
             switchToTeam(team) {
                 this.$inertia.put(route('current-team.update'), {
@@ -365,11 +360,22 @@
             },
 
             markAsRead(data){
+                    alert("hello")
+                    this.showNotificationPopUp=true
+                    this.messageDetails=data
                     data._method = 'post';
                     axios.post(route('users.markNotification'), data)
                     .then((response)=>{
-                            this.message = response.data.message
-                            setTimeout(() => {this.message = null; this.reset()}, 2000);
+                            self.$store.dispatch('getNotifications')
+                    })
+                    .catch(e => {
+                        this.errors = e.errors;
+                    });
+            },
+
+            markAllAsRead(){
+                    axios.get(route('users.markAllAsRead'))
+                    .then((response)=>{
                             self.$store.dispatch('getNotifications')
                     })
                     .catch(e => {

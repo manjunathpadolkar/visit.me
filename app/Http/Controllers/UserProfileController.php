@@ -23,6 +23,16 @@ class UserProfileController extends Controller
         
     }
 
+    public function getDashboard()
+    {
+        return Inertia::render('Dashboard');
+    }
+
+    public function getUsername()
+    {
+        return Inertia::render('Profile');
+    }
+
     public function getNotifications()
     {
         $notifications = auth()->user()->unreadNotifications;
@@ -38,6 +48,15 @@ class UserProfileController extends Controller
             ->when($request->input('id'), function ($query) use ($request) {
                 return $query->where('id', $request->input('id'));
             })
+            ->markAsRead();
+
+        return response()->noContent();
+    }
+
+    public function markAllAsRead()
+    {
+        auth()->user()
+            ->unreadNotifications
             ->markAsRead();
 
         return response()->noContent();
@@ -204,45 +223,7 @@ class UserProfileController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = array(
-            'user_id' => 'required',
-            'first_name' => 'required', 
-            'last_name' => 'required', 
-            'full_name_font' => 'required',
-            'full_name_color' => 'required',
-            'full_name_font_size' => 'required',
-            'location' => 'required',
-            'location_color' => 'required',
-            'location_font' => 'required',
-            'location_font_size' => 'required',
-            'skill_tag' => 'required',
-            'skill_tag_font' => 'required',
-            'skill_tag_bg_color' => 'required',
-            'skill_tag_text_color' => 'required',
-            'website' => 'required',
-            'website_font' => 'required',
-            'website_color' => 'required',
-            'description' => 'required',
-            'description_color' => 'required',
-            'description_font' => 'required'
-        );
-        $error = Validator::make($request->all(), $rules);
 
-        if($error->fails())
-        {
-            return response()->json(['errors' => $error->errors()->all()]);
-        }     
-        
-        if(UserProfile::Where('user_id', $request->user_id)->exists())
-        {
-            UserProfile::find($request->input('user_id'))->update($request->all());
-            return response()->json(['message' => 'User Updated Successfully.']);
-        }
-        else
-        {  
-            UserProfile::create($request->all());  
-            return response()->json(['message' => 'Details Updated.']); 
-        }
     }
 
     /**

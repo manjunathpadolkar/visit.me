@@ -92,12 +92,11 @@ const store = createStore({
             console.log(error)
             this.errors = 'Error retriving data!'
         })
-          
       })
     },
 
     getProfile(context){
-      axios.get('/user/getProfile')
+      axios.get(route('users.getProfile'))
       .then((response)=>{
         context.commit('setProfile', response.data.userProfile)
       })

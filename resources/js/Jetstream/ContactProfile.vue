@@ -7,7 +7,7 @@
             <div class="mr-4">
                 <label for="first_name" class="block text-sm font-medium text-white">First name</label>
                 <input type="text"  name="first_name" v-model="form.visitorFirstName" id="first_name" class="mt-1 focus:ring-indigo-500 text-black focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md cursor-text">
-                <div v-if="v$.form.visitorFirstName.$error" class=" text-red-600">Last Name is Required</div> 
+                <div v-if="v$.form.visitorFirstName.$error" class=" text-red-600">First Name is Required</div> 
             </div>
             <div class="ml-4">
                 <label for="last_name" class="block text-sm font-medium text-white">Last name</label>
@@ -17,14 +17,14 @@
             <div class="grid-cols-2 col-span-2 mt-4">
                 <label for="visitorEmail" class="block text-sm font-medium text-white">visitorEmail</label>
                 <input type="text" name="visitorEmail" v-model="form.visitorEmail" id="visitorEmail" class="mt-1 text-black focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md cursor-text">
-                <div v-if="v$.form.visitorEmail.$error" class=" text-red-600">Last Name is Required</div> 
+                <div v-if="v$.form.visitorEmail.$error" class=" text-red-600">Email is Required</div> 
             </div>
         </div>
         <div class="grid grid-cols-2 rounded shadow-md hover:shadow-lg  justify-center"> 
             
             <div class=" bg-center">
                 <textarea class="rounded-lg w-full mr-0 sm:mr-4 text-black" name="message" id="message" cols="30" rows="10" placeholder="Message" v-model="form.visitorMessage"></textarea>
-                <div v-if="v$.form.visitorMessage.$error" class=" text-red-600">Last Name is Required</div> 
+                <div v-if="v$.form.visitorMessage.$error" class=" text-red-600">Message is Required</div> 
                 <input type="hidden" name="userId" v-model="form.userId" id="userId" class="mt-1 focus:ring-indigo-500 text-black focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md cursor-text">
                 <div class="mt-6"> 
                     <button class="bg-green-600 text-secondary-900 text-white p-2 rounded py-2 px-3 uppercase text-md cursor-pointer tracking-wider hover:shadow-inner transform hover:scale-100 hover:opacity-80 transition ease-out duration-300" @click="sendvisitorEmail(form)">Send</button>
@@ -137,8 +137,6 @@
                         else if(response.data.message){
                             this.message = response.data.message
                             setTimeout(() => {this.message = null; this.reset()}, 2000);
-                            self.$store.dispatch('getProfile')
-                            this.getProfile();
                         }
                     })
                     .catch(e => {
@@ -148,7 +146,6 @@
                 else{
                     console.log("Validation error!")
                 }
-                this.$store.dispatch('getProfile') 
             }
         }
     })

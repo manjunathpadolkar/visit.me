@@ -132,7 +132,7 @@
     import { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
     import MyBtn from '../MyComponents/MyBtn.vue'
-import MyChips from '../MyComponents/MyChips.vue'
+    import MyChips from '../MyComponents/MyChips.vue'
 
     export default defineComponent({
         components: {

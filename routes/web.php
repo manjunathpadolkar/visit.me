@@ -18,7 +18,7 @@ use Inertia\Inertia;
 */
 
 //routes for unregistered users
-Route::get('visit/{username}', [VisitorController::class, 'showUser'])->name('visitor.show-user');
+Route::get('{username}', [VisitorController::class, 'showUser'])->name('visitor.show-user');
 Route::get('user/profile/{id}', [VisitorController::class, 'getVisitorProfile'])->name('visitor.get-visitor-profile');
 Route::post('visit/email/send-message', [VisitorController::class, 'sendVisitorMessage'])->name('visitor.send-message');
 
@@ -32,30 +32,15 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
-    Route::get('dashboard', function () {
-       
-        return Inertia::render('Dashboard');
-        // return Inertia::render('Dashboard',['notifications'=> compact('notifications')]);
-    })->name('dashboard');
-    Route::get('/profile/edit/{username}', function () {
-        
-        return Inertia::render('Profile');
-    })->name('username');
-    Route::resource('userprofiles', UserProfileController::class);
-    Route::get('user/getNotifications', [UserProfileController::class, 'getNotifications'])->name('users.getNotifications');
+    Route::get('user/dashboard', [UserProfileController::class, 'getDashboard'])->name('dashboard');
+    Route::get('/profile/edit/{username}', [UserProfileController::class, 'getUsername'])->name('username');
+    Route::get('user/get-notifications', [UserProfileController::class, 'getNotifications'])->name('users.getNotifications');
+    Route::get('user/mark-all-as-read', [UserProfileController::class, 'markAllAsRead'])->name('users.markAllAsRead');
     Route::post('user/mark-as-read', [UserProfileController::class, 'markNotification'])->name('users.markNotification');
-    Route::get('user/getuser', [UserProfileController::class, 'getUser'])->name('users.getUsername');
-    Route::get('user/getProfile', [UserProfileController::class, 'getProfile'])->name('users.getProfile');
+    Route::get('user/get-user', [UserProfileController::class, 'getUser'])->name('users.getUsername');
+    Route::get('user/get-profile', [UserProfileController::class, 'getProfile'])->name('users.getProfile');
     Route::put('user/update/update-profile', [UserProfileController::class, 'updateProfile'])->name('users.update-profile');
-    Route::put('user/update-first-name/{id}', [UserProfileController::class, 'updateFname'])->name('users.update-first-name');
-    Route::put('user/update-last-name/{id}', [UserProfileController::class, 'updateLname'])->name('users.update-last-name');
-    Route::put('user/update-full_name_color/{id}', [UserProfileController::class, 'updateFullNameColor'])->name('users.update-full_name_color');
-    Route::put('user/update-full_name_font/{id}', [UserProfileController::class, 'updateFullNameFont'])->name('users.update-full_name_font');
-    Route::put('user/update-full_name_font_size/{id}', [UserProfileController::class, 'updateFullNameSize'])->name('users.update-full_name_font_size');
-    Route::put('user/update-location/{id}', [UserProfileController::class, 'updateLocation'])->name('users.update-location');
-    Route::put('user/update-location_color/{id}', [UserProfileController::class, 'updateLocationColor'])->name('users.update-location_color');
-    Route::put('user/update-location_font/{id}', [UserProfileController::class, 'updateLocationFont'])->name('users.update-location_font');
-    Route::put('user/update-location_font_size/{id}', [UserProfileController::class, 'updateLocationSize'])->name('users.update-location_font_size');
+    
     Route::post('user/add-social-links', [UserProfileController::class, 'addSocialLinks'])->name('users.add-social-links');
     Route::post('user/profile-pic/upload', [UserProfileController::class, 'upload'])->name('userprofile.upload');
     Route::post('user/bg-pic/upload', [UserProfileController::class, 'uploadBg'])->name('userprofile.uploadBg');
