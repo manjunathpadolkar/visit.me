@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('user/profile-pic/upload', [UserProfileController::class, 'upload'])->name('userprofile.upload');
     Route::post('user/bg-pic/upload', [UserProfileController::class, 'uploadBg'])->name('userprofile.uploadBg');
     Route::get('user/social-links', [UserProfileController::class, 'getSocialLinks'])->name('users.getSocialLinks');
+    Route::delete('delete/social-links/{id}', [UserProfileController::class, 'destroy'])->name('users.destroy');
 });
 
 

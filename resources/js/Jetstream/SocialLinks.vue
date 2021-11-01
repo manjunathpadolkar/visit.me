@@ -14,6 +14,28 @@
         <my-btn color="primary" @click="addCandidate">
             Submit
         </my-btn>
+
+        <!-- Social Links    -->
+            <div class="shadow-md hover:shadow-lg mt-4">
+                <div class="p-1 border-b-2 border-white ">
+                    <div class="px-4 ">
+                        
+                                <table class=" table-auto" >
+                                    <tbody>
+                                        <tr  v-for="link in socialLinks" :key="link.id" >
+                                            <td><img :src="link.source" class="w-8 h-8 inline-block">
+                                                {{ link.name }}</td>
+                                            <td>
+                                            <svg class="w-6 h-6 inline-block text-red-700"  @click="deleteRow(link.id)" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                    </div>
+                </div>
+            </div>
    </div>
    
     <!-- Error/Success messages -->
@@ -58,6 +80,7 @@
         },
         validations () {
             return {
+                social_links:'',
                 inputs: {
                     $each:{
                         name: { required }
@@ -65,7 +88,32 @@
                 }
             }
         },
+        computed: {
+            //Get Social links from store
+            socialLinks(){
+               if(this.$store.state.social_links!=null){
+                    this.social_links = this.$store.state.social_links
+                }
+                return this.social_links
+            },
+        },
         methods:{
+
+            deleteRow: function (id) {
+                const data = {
+                    id : id
+                }
+                data._method = 'DELETE';
+                axios.post(route('users.destroy',data), data)
+                .then((response)=>{
+                    if(response.data.deletemsg){
+                        this.deletemsg = response.data.deletemsg
+                        setTimeout(() => { this.deletemsg = null; }, 2000);
+                        this.$store.dispatch('getSocialLinks') 
+                    }
+                })
+            },
+
             add(index) {
                 this.inputs.push({ name: '' });
                 console.log(this.inputs)

@@ -13,14 +13,14 @@
             </div>
             <!-- Skill -->
             <div class="border-b-2 border-gray-400">
-                <div class=" md:flex md:justify-center md:ml-10 md:mr-10 md:mt-4 mb-4">
+                <div class=" md:flex md:justify-center md:ml-10 md:mr-10 md:mt-4 mb-4" v-if="splitedList !=''">
                     <div class="sm:mt-4 md:mt-0 sm:flex sm:justify-center px-2 py-2" v-for="skill in splitedList" :key="skill">
-                        <span class=" rounded-full py-2 px-4 bg-gray-200" :class="$store.state.skill_tag_font" :style="[{background: $store.state.skill_tag_bg_color},{color: $store.state.skill_tag_text_color}]">{{ skill }} </span>
+                        <span class=" rounded-full py-2 px-4 bg-gray-200" v-if="skill != ''" :class="$store.state.skill_tag_font" :style="[{background: $store.state.skill_tag_bg_color},{color: $store.state.skill_tag_text_color}]">{{ skill }} </span>
                     </div>
                 </div>
             </div>
             <!-- Tabs -->
-            <div class="border-b-2 border-green-500 py-4 shadow-md hover:shadow-lg">
+            <div class="border-b-2py-4 shadow-md hover:shadow-lg">
                 <div class="flex justify-between py-3 ">
                     <div @click="activeTab='Home'" class=" ml-10 bg-secondary-100 text-secondary-200 text-xs uppercase font-bold rounded-full">
                         <svg class="w-8 h-8 inline-block hover:scale-125 hover:opacity-100 transition ease-out duration-300 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -49,7 +49,7 @@
                     <div v-for="link in socialLinks" :key="link.id" class="px-4 ">
                         <ul class="">
                             <li class="mt-4">
-                                <a :href="link.name"><img :src="link.source" class="w-8 h-8 inline-block">
+                                <a :href="'//'+link.name"><img :src="link.source" class="w-8 h-8 inline-block">
                                     {{ link.name }}
                                 </a>
                             </li>

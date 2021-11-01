@@ -135,7 +135,8 @@ class UserProfileController extends Controller
                 $link_source = "/images/social_icons/twitter.png";
             }
             else{
-                return response()->json(['error' => 'Incorrect Link.']);
+                $link_type="link";
+                $link_source = "/images/social_icons/link.png";
             }
             // youtube
             $data = array(
@@ -266,8 +267,11 @@ class UserProfileController extends Controller
      * @param  \App\Models\UserProfile  $userProfile
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserProfile $userProfile)
+    public function destroy(Request $request)
     {
-        //
+        if ($request->has('id')) {
+            SocialLinks::find($request->input('id'))->delete();
+            return response()->json(['deletemsg' => 'Data Deleted']);
+        }
     }
 }

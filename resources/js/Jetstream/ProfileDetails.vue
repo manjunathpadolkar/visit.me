@@ -30,11 +30,11 @@
                     </div>
                 </div>
                 <div class="flex justify-center rounded-lg text-sm mb-4 mt-4" role="group">
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fill' ? 'bg-blue-500 text-white' : ''"  @click="updateFillImage()">Fill</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fit' ? 'bg-blue-500 text-white' : ''" @click="updateFitImage()">Fit</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='stretch' ? 'bg-blue-500 text-white' : ''" @click="updateStretchImage()">Stretch</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='tile' ? 'bg-blue-500 text-white' : ''" @click="updateTileImage()">Tile</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='center' ? 'bg-blue-500 text-white' : ''" @click="updateCenterImage()">Center</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fill' ? 'bg-blue-500 text-white' : ''"  @click="updateBgType('fill')">Fill</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fit' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('fit')">Fit</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='stretch' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('stretch')">Stretch</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='tile' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('tile')">Tile</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='center' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('center')">Center</button>
                 </div>
             </div>
             <div class="p-6">
@@ -273,6 +273,7 @@
         setup: () => ({ v$: useVuelidate() }),
         data() {
             return {
+
                 user_image: '',
                 bg_image:'',
                 file:'',
@@ -352,9 +353,9 @@
             }
         },
         mounted() {
-            setTimeout(() => { this.message = null; }, 1000);
-            this.$store.dispatch('getProfile')
-            this.getProfile();
+            // setTimeout(() => { this.message = null; }, 1000);
+            //  this.$store.dispatch('getProfile')
+             this.getProfile()
         },
         //Get and set state of varaibles
         computed:{
@@ -579,14 +580,13 @@
                     else if(response.data.message){
                         this.message = response.data.message
                         setTimeout(() => { this.message = null;}, 2000);
-                        self.$store.dispatch('getProfile')
+                        this.$store.dispatch('getProfile')
                         this.getProfile();
                     }
                 })
                 .catch(e => {
                     this.errors = e.errors;
                 });
-                this.$store.dispatch('getProfile')
             },
 
             //***************Validate FIRST NAME UPDATE onchange event*************************
@@ -760,48 +760,49 @@
                 this.updateProfile(data)
             },
 
-            updateStretchImage(){
-                this.bgTypeBtn = 'stretch'
-                const data = {
-                    bg_type : 'background-position: center; background-repeat: no-repeat; background-size: fill',
-                    bg_type_btn : 'stretch'
+            updateBgType(type){
+                let data
+                if(type == 'stretch')
+                {
+                    this.bgTypeBtn = 'stretch'
+                    data = {
+                        bg_type : 'background-position: center; background-repeat: no-repeat; background-size: cover',
+                        bg_type_btn : 'stretch'
+                    }
                 }
-                this.updateProfile(data)
-            },
-
-            updateFillImage(){
-                this.bgTypeBtn = 'fill'
-                const data = {
-                    bg_type : 'background-repeat: no-repeat; background-size: cover;',
-                    bg_type_btn : 'fill'
+                if(type == 'fill')
+                {   
+                    this.bgTypeBtn = 'fill'
+                    data = {
+                        bg_type : 'background-repeat: no-repeat; background-size: fill; ',
+                        bg_type_btn : 'fill'
+                    }
                 }
-                this.updateProfile(data)
-            },
-
-            updateFitImage(){
-                this.bgTypeBtn = 'fit'
-                const data = {
-                    bg_type : 'background-position: center; background-repeat: no-repeat; background-size: contain;',
-                    bg_type_btn : 'fit'
+                if(type == 'fit')
+                {
+                    this.bgTypeBtn = 'fit'
+                    data = {
+                        bg_type : 'background-position: center; background-repeat: no-repeat; background-size: contain;',
+                        bg_type_btn : 'fit'
+                    }
                 }
-                this.updateProfile(data)
-            },
-
-            updateCenterImage(){
-                this.bgTypeBtn = 'center'
-                const data = {
-                    bg_type : 'background-repeat: no-repeat; background-attachment: fixed; background-position: center;',
-                    bg_type_btn : 'center'
+                if(type == 'center')
+                {
+                    this.bgTypeBtn = 'center'
+                    data = {
+                        bg_type : 'background-repeat: no-repeat; background-attachment: fixed; background-position: center;',
+                        bg_type_btn : 'center'
+                    }
                 }
-                this.updateProfile(data)
-            },
-
-            updateTileImage(){
-                this.bgTypeBtn = 'tile'
-                const data = {
-                    bg_type : 'background-position: center; background-repeat: repeat;',
-                    bg_type_btn : 'tile'
+                if(type == 'tile')
+                {
+                    this.bgTypeBtn = 'tile'
+                    data = {
+                        bg_type : 'background-position: center; background-repeat: repeat;',
+                        bg_type_btn : 'tile'
+                    }
                 }
+                console.log(data)
                 this.updateProfile(data)
             },
 
