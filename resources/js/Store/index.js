@@ -96,7 +96,7 @@ const store = createStore({
     },
 
     getProfile(context){
-      axios.get(route('users.getProfile'))
+      return axios.get(route('users.getProfile'))
       .then((response)=>{
         context.commit('setProfile', response.data.userProfile)
       })

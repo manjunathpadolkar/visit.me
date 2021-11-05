@@ -3,7 +3,7 @@
       <!-- divide page into two parts -->
         <div class="relative flex ">
           <!-- Div for movable card -->
-                <div class="w-2/3 flex justify-center bg-gray-500" :style="[!toggleBar ? 'width: 100%': '', {opacity: $store.state.background_opacity},!$store.state.bg_display ? {'background-image': 'url(/storage/images/'+$store.state.bg_image+')'} : '', bgType ? bgType :'']"> <!-- ,{'background-size': 'contain'} -->
+                <div class="w-2/3 flex justify-center bg-gray-500" :style="[!toggleBar ? 'width: 100%': '',!$store.state.bg_display ? {'background-image': 'url(/storage/images/'+$store.state.bg_image+')'} : '', bgType ? bgType :'']"> <!-- ,{'background-size': 'contain'} -->
                     <profile/>
                 </div>
           <!-- div for sidbar fixed -->     

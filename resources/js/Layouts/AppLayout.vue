@@ -319,10 +319,7 @@
         },
         mounted() {
             this.$store.dispatch('getNotifications')
-            console.log(this.$store.state.notifications)
             this.getUsers()
-            // console.log(this.$store.state.showNotification)
-            // console.log(this.notifications)
         },
         data() {
             return {

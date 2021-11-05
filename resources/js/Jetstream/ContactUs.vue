@@ -13,7 +13,9 @@
                     <div class="col-span-6 sm:col-span-3 mt-4">
                         <label for="full_name_color" class="block text-sm font-medium text-gray-700">Font Color </label>
                         <input type="hidden" name="full_name_color" id="full_name_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="phone_color" phone_color:phone_color>
-                        <select @click="visiblePhone = !visiblePhone" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select @click="visiblePhone = !visiblePhone" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option :value="phone_color" selected>{{ phone_color }}</option>
+                        </select> 
                             <ColorPicker
                                 v-if="visiblePhone"
                                 theme="light"
@@ -49,7 +51,9 @@
                     <div class="col-span-6 sm:col-span-3 mt-4">
                         <label for="full_name_color" class="block text-sm font-medium text-gray-700">Font Color </label>
                         <input type="hidden" name="full_name_color" id="full_name_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="address_color" address_color:address_color>
-                        <select @click="visibleAddress = !visibleAddress" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select @click="visibleAddress = !visibleAddress" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">  
+                            <option :value="address_color" selected>{{ address_color }}</option>
+                        </select>
                             <ColorPicker
                                 v-if="visibleAddress"
                                 theme="light"
@@ -85,7 +89,9 @@
                     <div class="col-span-6 sm:col-span-3 mt-4">
                         <label for="full_name_color" class="block text-sm font-medium text-gray-700">Font Color </label>
                         <input type="hidden" name="full_name_color" id="full_name_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="email_color" email_color:email_color>
-                        <select @click="visibleEmail = !visibleEmail" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select @click="visibleEmail = !visibleEmail" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option :value="email_color" selected>{{ email_color }}</option>
+                        </select>
                             <ColorPicker
                                 v-if="visibleEmail"
                                 theme="light"
@@ -122,7 +128,9 @@
                         <div class="col-span-6 sm:col-span-3 mt-4">
                             <label for="website_color" class="block text-sm font-medium text-gray-700">Font Color </label>
                             <input type="hidden" name="website_color" id="website_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="website_color">
-                            <select  @click="visibleWebsite = !visibleWebsite" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                            <select  @click="visibleWebsite = !visibleWebsite" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"> 
+                                <option :value="website_color" selected>{{ website_color }}</option>
+                            </select>
                                 <ColorPicker
                                     v-if="visibleWebsite"
                                     theme="light"

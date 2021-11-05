@@ -1,6 +1,7 @@
 <template>
     <div class="shadow my-4">
         <div class="divide-y-4 divide-black divide-opacity-30">
+            <!-- Profile Image Add -->
             <div class="p-6">
                 <div class=" flex justify-center pb-2"> 
                     <label class=" w-32 h-32 flex flex-col items-center  bg-white rounded-full shadow-md tracking-wide uppercase border border-blue cursor-pointer ease-linear transition-all duration-150">
@@ -10,6 +11,8 @@
                     </label>
                 </div> 
             </div>
+
+            <!-- Background Image Add -->
             <div class="p-6">
                 <div class=" flex justify-center pb-2"> 
                     <label class="w-64 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase  border-4 border-gray-200 border-dashed cursor-pointer hover:shadow-md text-gray-500 ease-linear transition-all duration-150">
@@ -30,15 +33,28 @@
                     </div>
                 </div>
                 <div class="flex justify-center rounded-lg text-sm mb-4 mt-4" role="group">
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fill' ? 'bg-blue-500 text-white' : ''"  @click="updateBgType('fill')">Fill</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='fit' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('fit')">Fit</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='stretch' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('stretch')">Stretch</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='tile' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('tile')">Tile</button>
-                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="bgTypeBtn=='center' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('center')">Center</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-r-0 border-gray-500 rounded-l-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type_btn=='fill' ? 'bg-blue-500 text-white' : ''"  @click="updateBgType('fill')">Fill</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type_btn=='fit' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('fit')">Fit</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type_btn=='stretch' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('stretch')">Stretch</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-gray-500  px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type_btn=='tile' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('tile')">Tile</button>
+                    <button class="bg-white text-gray-500 hover:bg-blue-500 hover:text-white border border-l-0 border-gray-500 rounded-r-lg px-4 py-2 mx-0 outline-none focus:shadow-outline" :class="$store.state.bg_type_btn=='center' ? 'bg-blue-500 text-white' : ''" @click="updateBgType('center')">Center</button>
                 </div>
             </div>
+
+            <!-- Background opacity Add/Edit -->
             <div class="p-6">
-                <!-- Full Name add/Edit -->
+                <div  @click="isOpenBackground = ! isOpenBackground" class=" font-semibold rounded cursor-pointer">Background</div>
+                <div :class="isOpenBackground ? 'd-block' : 'hidden'">
+                    <div class="col-span-6 sm:col-span-2 mt-4">
+                        <label for="background_opacity" class="block text-sm font-medium text-gray-700">Background Opacity</label>
+                        <input type="range" min="0.1" max="1.0" step="0.1" @change="updateBackgroundOpacity({background_opacity})" v-model="background_opacity" class="mt-4">
+                        <div v-if="v$.background_opacity.$error" class=" text-red-600">Font Size Required</div> 
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Name add/Edit -->
+            <div class="p-6">
                 <div  @click="isOpenName = ! isOpenName" class=" font-semibold rounded cursor-pointer">Name</div>
                 <div :class="isOpenName ? 'd-block' : 'hidden'">
                     <div class="mt-4">
@@ -55,7 +71,9 @@
                     <div class="col-span-6 sm:col-span-2 mt-4">
                         <label for="full_name_color" class="block text-sm font-medium text-gray-700">Font Color</label>
                         <input type="hidden" name="full_name_color" id="full_name_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="full_name_color" >
-                        <select @click="visibleName = !visibleName" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select @click="visibleName = !visibleName" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option :value="full_name_color" selected>{{ full_name_color }}</option>
+                        </select>   
                             <ColorPicker
                                 v-if="visibleName"
                                 theme="light"
@@ -98,7 +116,9 @@
                     <div class="col-span-6 sm:col-span-2 mt-4">
                         <label for="location_color" class="block text-sm font-medium text-gray-700">Font Color</label>
                         <input type="hidden" name="location_color" id="location_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="location_color">
-                        <select @click="visibleLocation = !visibleLocation" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select @click="visibleLocation = !visibleLocation" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option :value="location_color" selected>{{ location_color }}</option>
+                        </select>   
                             <ColorPicker
                                 v-if="visibleLocation"
                                 theme="light"
@@ -139,7 +159,9 @@
                     <div class="col-span-6 sm:col-span-2 mt-4">
                         <label for="skill_tag_bg_color" class="block text-sm font-medium text-gray-700">Background </label>
                         <input type="hidden" name="skill_tag_bg_color" id="skill_tag_bg_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="skill_tag_bg_color" >
-                        <select @click="visibleTag = !visibleTag" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select @click="visibleTag = !visibleTag" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">  
+                            <option :value="skill_tag_bg_color" selected>{{ skill_tag_bg_color }}</option>
+                        </select>
                             <ColorPicker
                                 v-if="visibleTag"
                                 theme="light"
@@ -155,7 +177,9 @@
                     <div class="col-span-6 sm:col-span-2 mt-4">
                         <label for="skill_tag_text_color" class="block text-sm font-medium text-gray-700">Font Color </label>
                         <input type="hidden" name="skill_tag_text_color" id="skill_tag_text_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="skill_tag_text_color" >
-                        <select  @click="visibleTagFont = !visibleTagFont" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select  @click="visibleTagFont = !visibleTagFont" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">  
+                            <option :value="skill_tag_text_color" selected>{{ skill_tag_text_color }}</option>
+                        </select>
                             <ColorPicker
                                 v-if="visibleTagFont"
                                 theme="light"
@@ -191,7 +215,9 @@
                     <div class="mt-4">
                         <label for="description_color" class="block text-sm font-medium text-gray-700">Font Color </label>
                         <input type="hidden" name="description_color" id="description_color" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" v-model="description_color">
-                        <select  @click="visibleDescription = !visibleDescription" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></select>   
+                        <select  @click="visibleDescription = !visibleDescription" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">   
+                            <option :value="description_color" selected>{{ description_color }}</option>
+                        </select>
                             <ColorPicker
                                 v-if="visibleDescription"
                                 theme="light"
@@ -214,18 +240,6 @@
                         <div v-if="v$.description_font.$error" class=" text-red-600">Please select a font style</div> 
                     </div>
                 </div>                    
-            </div>
-
-            <!-- Background Add/Edit -->
-            <div class="p-6">
-                <div  @click="isOpenBackground = ! isOpenBackground" class=" font-semibold rounded cursor-pointer">Background</div>
-                <div :class="isOpenBackground ? 'd-block' : 'hidden'">
-                    <div class="col-span-6 sm:col-span-2 mt-4">
-                        <label for="background_opacity" class="block text-sm font-medium text-gray-700">Background Opacity</label>
-                        <input type="range" min="0.1" max="1.0" step="0.1" @change="updateBackgroundOpacity({background_opacity})" v-model="background_opacity" class="mt-4">
-                        <div v-if="v$.background_opacity.$error" class=" text-red-600">Font Size Required</div> 
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -269,7 +283,11 @@
             Label,
             Button,
         },
-        
+        async mounted() {
+             await this.$store.dispatch('getProfile')
+             this.getProfile()
+        },
+
         setup: () => ({ v$: useVuelidate() }),
         data() {
             return {
@@ -281,7 +299,7 @@
                 first_name: '',
                 last_name: '',
                 full_name_font: '',
-                full_name_color: '#010101',
+                full_name_color: this.$store.state.full_name_color,
                 full_name_font_size: '',
                 location: '',
                 location_color: '#010101',
@@ -300,7 +318,7 @@
                 tagBgColor: '#010101',
                 tagFontColor:'#010101',
                 description_color_picker:'#010101',
-                background_opacity:'',
+                background_opacity:'0.8',
                 visibleName: false,
                 visibleLocation: false,
                 visibleTag: false,
@@ -331,8 +349,6 @@
                 bgDisplay:true,
                 stretchImage:'',
                 bgType:'',
-                bgTypeBtn:'',
-                               
             }
         },
 
@@ -351,11 +367,6 @@
                 description_font: { required },
                 background_opacity: { required },
             }
-        },
-        mounted() {
-            // setTimeout(() => { this.message = null; }, 1000);
-            //  this.$store.dispatch('getProfile')
-             this.getProfile()
         },
         //Get and set state of varaibles
         computed:{
@@ -504,22 +515,6 @@
                     this.$store.commit('updateBgDisplay', value)
                 },
             },
-
-            bgTypeBtn: {
-                get () {
-                    return this.$store.state.bg_type_btn
-                },
-                set (bg_type_btn) {
-                    this.$store.commit('updatebgTypeBtn', this.bg_type_btn)
-                },
-            },
-
-            // bgTypeBtnChk(){
-            //    if(this.$store.state.bg_type_btn!=null){
-            //         this.bgTypeBtn=this.$store.state.bg_type_btn
-            //     }
-            //     return this.bgTypeBtn
-            // },
         },
         methods: {
             //Upload Profile pic
@@ -764,7 +759,6 @@
                 let data
                 if(type == 'stretch')
                 {
-                    this.bgTypeBtn = 'stretch'
                     data = {
                         bg_type : 'background-position: center; background-repeat: no-repeat; background-size: cover',
                         bg_type_btn : 'stretch'
@@ -772,7 +766,6 @@
                 }
                 if(type == 'fill')
                 {   
-                    this.bgTypeBtn = 'fill'
                     data = {
                         bg_type : 'background-repeat: no-repeat; background-size: fill; ',
                         bg_type_btn : 'fill'
@@ -780,7 +773,6 @@
                 }
                 if(type == 'fit')
                 {
-                    this.bgTypeBtn = 'fit'
                     data = {
                         bg_type : 'background-position: center; background-repeat: no-repeat; background-size: contain;',
                         bg_type_btn : 'fit'
@@ -788,7 +780,6 @@
                 }
                 if(type == 'center')
                 {
-                    this.bgTypeBtn = 'center'
                     data = {
                         bg_type : 'background-repeat: no-repeat; background-attachment: fixed; background-position: center;',
                         bg_type_btn : 'center'
@@ -796,7 +787,6 @@
                 }
                 if(type == 'tile')
                 {
-                    this.bgTypeBtn = 'tile'
                     data = {
                         bg_type : 'background-position: center; background-repeat: repeat;',
                         bg_type_btn : 'tile'

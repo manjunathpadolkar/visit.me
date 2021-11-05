@@ -43,6 +43,12 @@ class CreateNewUser implements CreatesNewUsers
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],
             'email' => $input['email'],
+            'full_name_color' => '#FFFFFF',
+            'full_name_font' => 'font-mono',
+            'full_name_font_size' => '30',
+            'email_color' => '#FFFFFF',
+            'email_font' => 'font-mono',
+            'background_opacity' => '0.8',
             'user_image' => '1633524720.png',
         ]);
         return $user;

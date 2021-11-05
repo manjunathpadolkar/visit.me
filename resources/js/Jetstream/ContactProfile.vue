@@ -3,7 +3,7 @@
         <div class="grid-cols-2 col-span-2 py-10">
                 <h2 class="flex justify-center font-extrabold text-4xl">CONTACT</h2>
         </div>
-        <div v-if="!$store.state.registeredUser" class="grid grid-cols-2 rounded shadow-md hover:shadow-lg  justify-center p-5">
+        <div v-if="!$store.state.registeredUser" class="grid grid-cols-2 rounded shadow-md hover:shadow-lg  justify-center pb-10 px-5">
             <div class="mr-4">
                 <label for="first_name" class="block text-sm font-medium text-white">First name</label>
                 <input type="text"  name="first_name" v-model="form.visitorFirstName" id="first_name" class="mt-1 focus:ring-indigo-500 text-black focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md cursor-text">
@@ -15,13 +15,12 @@
                 <div v-if="v$.form.visitorLastName.$error" class=" text-red-600">Last Name is Required</div> 
             </div>
             <div class="grid-cols-2 col-span-2 mt-4">
-                <label for="visitorEmail" class="block text-sm font-medium text-white">visitorEmail</label>
+                <label for="visitorEmail" class="block text-sm font-medium text-white">Email</label>
                 <input type="text" name="visitorEmail" v-model="form.visitorEmail" id="visitorEmail" class="mt-1 text-black focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md cursor-text">
                 <div v-if="v$.form.visitorEmail.$error" class=" text-red-600">Email is Required</div> 
             </div>
         </div>
-        <div class="grid grid-cols-2 rounded shadow-md hover:shadow-lg  justify-center"> 
-            
+        <div class="grid grid-cols-2 rounded shadow-md hover:shadow-lg  justify-center px-5"> 
             <div class=" bg-center">
                 <textarea class="rounded-lg w-full mr-0 sm:mr-4 text-black" name="message" id="message" cols="30" rows="10" placeholder="Message" v-model="form.visitorMessage"></textarea>
                 <div v-if="v$.form.visitorMessage.$error" class=" text-red-600">Message is Required</div> 

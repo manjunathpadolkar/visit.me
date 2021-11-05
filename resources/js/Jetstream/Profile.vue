@@ -1,7 +1,7 @@
 <template>
     <!-- different widths for visitor and registered user -->
     <div class=" py-10 "   @dragover="dragOver" @drop="drop" :class=" $store.state.check_visitor ? 'w-3/5 px-10' : 'w-3/6'">
-        <div class=" bg-gray-500 text-white border-4 border-white opacity-50 relative" draggable="true" @dragstart="dragStart" id="drag" :style="[{left: $store.state.card_left_position},{top: $store.state.card_top_position}, {width: $store.state.resize_width}]" style=" resize: horizontal; min-width: 450px; overflow: auto; max-width: 800px;" @click.self="getWidth()" >
+        <div class=" bg-gray-500 text-white border-4 border-white opacity-50 relative" :draggable="$store.state.registeredUser" @dragstart="dragStart" id="drag" :style="[{left: $store.state.card_left_position},{opacity: $store.state.background_opacity},{top: $store.state.card_top_position}, {width: $store.state.resize_width}, $store.state.registeredUser ? {resize: 'horizontal'} : '']" style="  min-width: 450px; overflow: auto; max-width: 800px;" @click.self="getWidth()" >
             <!-- Image -->
             <div class="mt-10 py-10">
                 <img class="mx-auto shadow rounded-full h-40 w-40 sm:h-16 sm:w-16 md:h-24 md:w-24 lg:h-32 lg:w-32 flex object-center object-cover border-none" :src="'/storage/images/'+$store.state.user_image" alt="profile">
@@ -115,7 +115,9 @@
             //Explode tags string into array with comma separator
             splitedList(){
                if(this.$store.state.skill_tag!=null){
-                    this.skill_tags=this.$store.state.skill_tag.split(',')
+                    this.skill_tags=this.$store.state.skill_tag.split(',').map(function(item) {
+                        return item.trim();
+                    });
                 }
                 return this.skill_tags
             },
@@ -184,7 +186,6 @@
             },
 
             getWidth(event){
-                alert("hello")
                  var dm = document.getElementById('drag');
                  this.resizeWidth = dm.style.width
                  const data = {
